@@ -1,0 +1,8 @@
+---
+BasedOnStyle: LLVM
+AccessModifierOffset: '-4'
+AlwaysBreakTemplateDeclarations: true
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+IndentWidth: '4'
+...
