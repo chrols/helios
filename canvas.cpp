@@ -16,9 +16,9 @@ void Canvas::write() const {
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             const Color &c = m_canvas[x + y * m_width];
-            int cx = std::min(std::max(c.x * 255, 0.0), 255.0);
-            int cy = std::min(std::max(c.y * 255, 0.0), 255.0);
-            int cz = std::min(std::max(c.z * 255, 0.0), 255.0);
+            int cx = std::min(std::max(c.r * 255, 0.0), 255.0);
+            int cy = std::min(std::max(c.g * 255, 0.0), 255.0);
+            int cz = std::min(std::max(c.b * 255, 0.0), 255.0);
             std::cout << cx << " " << cy << " " << cz
                       << (x == m_width - 1 ? "\n" : " ");
         }

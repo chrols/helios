@@ -27,7 +27,8 @@ public:
     Vector operator/(double scalar) const;
 
     double magnitude() const;
-    Vector normal() const;
+    Vector normalize() const;
+    Vector reflect(const Vector &n) const;
     double dot(const Vector &rhs) const;
     Vector cross(const Vector &rhs) const;
 };
@@ -42,6 +43,17 @@ public:
     Vector operator-(const Point &rhs) const;
 };
 
-using Color = Point;
+class Color {
+public:
+    Color();
+    Color(double r, double g, double b);
+
+    Color operator*(double scalar) const;
+    Color operator*(const Color &rhs) const;
+    Color operator+(const Color &rhs) const;
+    bool operator==(const Color &rhs) const;
+    double r, g, b;
+};
 
 std::ostream &operator<<(std::ostream &os, const Tuple &p);
+std::ostream &operator<<(std::ostream &os, const Color &p);

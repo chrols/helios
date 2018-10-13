@@ -9,4 +9,5 @@ class Sphere : public Object {
 public:
     Sphere();
     std::vector<Intersection> intersect(const Ray &r) const override;
+    Optional<Vector> normal(const Point &p) const override;
 };

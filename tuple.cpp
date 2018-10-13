@@ -50,8 +50,12 @@ double Vector::magnitude() const {
     return std::sqrt(x * x + y * y + z * z);
 }
 
-Vector Vector::normal() const {
+Vector Vector::normalize() const {
     return (*this / magnitude());
+}
+
+Vector Vector::reflect(const Vector &n) const {
+    return ((*this) - n * 2 * dot(n));
 }
 
 double Vector::dot(const Vector &rhs) const {
@@ -79,6 +83,30 @@ Vector Point::operator-(const Point &rhs) const {
     return Vector(x - rhs.x, y - rhs.y, z - rhs.z);
 }
 
+Color::Color() : r(0), g(0), b(0) {}
+
+Color::Color(double r, double g, double b) : r(r), g(g), b(b) {}
+
+Color Color::operator*(double scalar) const {
+    return Color(r * scalar, g * scalar, b * scalar);
+}
+
+Color Color::operator*(const Color &rhs) const {
+    return Color(r * rhs.r, g * rhs.g, b * rhs.b);
+}
+
+Color Color::operator+(const Color &rhs) const {
+    return Color(r + rhs.r, g + rhs.g, b + rhs.b);
+}
+bool Color::operator==(const Color &rhs) const {
+    return (almostEqual(r, rhs.r) && almostEqual(g, rhs.g) &&
+            almostEqual(b, rhs.b));
+}
+
 std::ostream &operator<<(std::ostream &os, const Tuple &p) {
     os << "(" << p.x << ", " << p.y << ", " << p.z << ", " << p.w << ")";
+}
+
+std::ostream &operator<<(std::ostream &os, const Color &p) {
+    os << "(" << p.r << ", " << p.g << ", " << p.b << ")";
 }

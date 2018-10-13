@@ -8,8 +8,8 @@ TEST(Point, MainStuff) {
     // ASSERT_EQ(Point(1, 1, 6), a1 + a2);
     ASSERT_EQ(Vector(0, 1, 0).magnitude(), 1);
     ASSERT_EQ(Vector(0, 1, 0).magnitude(), 1);
-    ASSERT_EQ(Vector(4, 0, 0).normal(), Vector(1, 0, 0));
-    ASSERT_LT(std::abs(Vector(1, 2, 3).normal().magnitude() - 1), 0.00001f);
+    ASSERT_EQ(Vector(4, 0, 0).normalize(), Vector(1, 0, 0));
+    ASSERT_LT(std::abs(Vector(1, 2, 3).normalize().magnitude() - 1), 0.00001f);
 }
 
 // int width = 800;

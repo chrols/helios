@@ -29,3 +29,14 @@ std::vector<Intersection> Sphere::intersect(const Ray &r) const {
 
     return xs;
 }
+
+Optional<Vector> Sphere::normal(const Point &p) const {
+    if (!transform.hasInverse())
+        return {};
+
+    auto inverse = transform.inverse();
+    auto objectPoint = inverse * p;
+    auto objectNormal = objectPoint - Point(0, 0, 0);
+    auto worldNormal = inverse.transpose() * objectNormal;
+    return worldNormal.normalize();
+}

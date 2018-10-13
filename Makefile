@@ -15,10 +15,10 @@ CXXFLAGS := -std=c++1z -fopenmp
 SRC = $(wildcard *.cpp)
 TEST = $(wildcard test/*.cpp)
 
-raytracer: $(SRC)
+raytracer: $(SRC) $(TEST)
 	g++  $(CXXFLAGS) $(SRC) $(TEST) -o raytracer libgtest.a -pthread
 
 all: raytracer
 
 test: raytracer
-	./raytracer
+	./raytracer -test

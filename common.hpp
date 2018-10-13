@@ -6,7 +6,8 @@
 
 template <typename T>
 bool almostEqual(const T &lhs, const T &rhs) {
-    return (std::abs(lhs - rhs) < std::numeric_limits<T>::epsilon());
+    // FIXME Using epsilon makes it a bit tedious to use the unit tests
+    return (std::abs(lhs - rhs) < 0.001); // std::numeric_limits<T>::epsilon());
 }
 
 template <typename T>
