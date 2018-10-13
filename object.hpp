@@ -1,8 +1,19 @@
 #pragma once
 
 #include "intersection.hpp"
+#include "matrix.hpp"
 #include "ray.hpp"
+#include <vector>
 
 class Object {
-    virtual Intersections intersect(const Ray &r) const = 0;
+public:
+    Object() : transform(Matrix<double>::identity(4)) {}
+
+    void setTransform(const Matrix<double> &transform) {
+        this->transform = transform;
+    }
+
+    virtual std::vector<Intersection> intersect(const Ray &r) const = 0;
+
+    Matrix<double> transform;
 };

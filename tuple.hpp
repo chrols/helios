@@ -6,28 +6,42 @@
 // w = 1 (point)
 // w = 0 (vector)
 
-class Point {
+class Tuple {
 public:
-    Point();
-    Point(float x, float y, float z);
+    Tuple(double x, double y, double z, double w);
 
-    Point operator-() const;
-    Point operator+(const Point &rhs) const;
-    Point operator-(const Point &rhs) const;
-    Point operator*(double scalar) const;
-    Point operator/(double scalar) const;
-    bool operator==(const Point &rhs) const;
+    bool operator==(const Tuple &rhs) const;
 
-    double magnitude() const;
-    Point normal() const;
-    double dot(const Point &rhs) const;
-    Point cross(const Point &rhs) const;
-
-    float x, y, z;
+    double x, y, z, w;
 };
 
-using Vector = Point;
-using Tuple = Point;
+class Vector : public Tuple {
+public:
+    Vector();
+    Vector(double x, double y, double z);
+
+    Vector operator-() const;
+    Vector operator+(const Vector &rhs) const;
+    Vector operator-(const Vector &rhs) const;
+    Vector operator*(double scalar) const;
+    Vector operator/(double scalar) const;
+
+    double magnitude() const;
+    Vector normal() const;
+    double dot(const Vector &rhs) const;
+    Vector cross(const Vector &rhs) const;
+};
+
+class Point : public Tuple {
+public:
+    Point();
+    Point(double x, double y, double z);
+
+    Point operator+(const Vector &rhs) const;
+    Point operator-(const Vector &rhs) const;
+    Vector operator-(const Point &rhs) const;
+};
+
 using Color = Point;
 
-std::ostream &operator<<(std::ostream &os, const Point &p);
+std::ostream &operator<<(std::ostream &os, const Tuple &p);

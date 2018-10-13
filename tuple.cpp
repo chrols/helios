@@ -1,70 +1,84 @@
 #include "tuple.hpp"
 
+#include "common.hpp"
 #include <cmath>
 #include <limits>
 
-Point::Point(float x, float y, float z) : x(x), y(y), z(z) {}
+Tuple::Tuple(double x, double y, double z, double w) : x(x), y(y), z(z), w(w) {}
 
-Point::Point() : Point(0, 0, 0) {}
+bool Tuple::operator==(const Tuple &rhs) const {
+    return (almostEqual(x, rhs.x) && almostEqual(y, rhs.y) &&
+            almostEqual(z, rhs.z) && almostEqual(w, rhs.w));
+}
 
-Point Point::operator-() const {
-    Point p(-x, -y, -z);
+Vector::Vector() : Tuple(0.0, 0.0, 0.0, 0.0) {}
+
+Vector::Vector(double x, double y, double z) : Tuple(x, y, z, 0.0) {}
+
+Vector Vector::operator-() const {
+    Vector p(-x, -y, -z);
     return p;
 }
 
-Point Point::operator+(const Point &rhs) const {
-    Point p;
+Vector Vector::operator+(const Vector &rhs) const {
+    Vector p;
     p.x = x + rhs.x;
     p.y = y + rhs.y;
     p.z = z + rhs.z;
     return p;
 }
 
-Point Point::operator-(const Point &rhs) const {
-    Point p;
+Vector Vector::operator-(const Vector &rhs) const {
+    Vector p;
     p.x = x - rhs.x;
     p.y = y - rhs.y;
     p.z = z - rhs.z;
     return p;
 }
 
-Point Point::operator*(double scalar) const {
-    Point p(x * scalar, y * scalar, z * scalar);
+Vector Vector::operator*(double scalar) const {
+    Vector p(x * scalar, y * scalar, z * scalar);
     return p;
 }
 
-Point Point::operator/(double scalar) const {
-    Point p(x / scalar, y / scalar, z / scalar);
+Vector Vector::operator/(double scalar) const {
+    Vector p(x / scalar, y / scalar, z / scalar);
     return p;
 }
 
-bool Point::operator==(const Point &rhs) const {
-    if (std::abs(x - rhs.x) > std::numeric_limits<float>::epsilon())
-        return false;
-    if (std::abs(y - rhs.y) > std::numeric_limits<float>::epsilon())
-        return false;
-    if (std::abs(z - rhs.z) > std::numeric_limits<float>::epsilon())
-        return false;
-    return true;
-}
-
-double Point::magnitude() const {
+double Vector::magnitude() const {
     return std::sqrt(x * x + y * y + z * z);
 }
 
-Point Point::normal() const {
+Vector Vector::normal() const {
     return (*this / magnitude());
 }
 
-double Point::dot(const Point &rhs) const {
+double Vector::dot(const Vector &rhs) const {
     return (x * rhs.x + y * rhs.y + z * rhs.z);
 }
 
-Point Point::cross(const Point &rhs) const {
-    return Point(y * rhs.z + z * rhs.y, z * rhs.x + x * rhs.z,
-                 x * rhs.y + y * rhs.x);
+Vector Vector::cross(const Vector &rhs) const {
+    return Vector(y * rhs.z + z * rhs.y, z * rhs.x + x * rhs.z,
+                  x * rhs.y + y * rhs.x);
 }
 
-std::ostream &operator<<(std::ostream &os, const Point &p) {
-    os << "(" << p.x << ", " << p.y << ", " << p.z << ")";
+Point::Point() : Tuple(0.0, 0.0, 0.0, 1.0) {}
+
+Point::Point(double x, double y, double z) : Tuple(x, y, z, 1.0f) {}
+
+Point Point::operator+(const Vector &rhs) const {
+    return Point(x + rhs.x, y + rhs.y, z + rhs.z);
+}
+
+Point Point::operator-(const Vector &rhs) const {
+    return Point(x - rhs.x, y - rhs.y, z - rhs.z);
+}
+
+Vector Point::operator-(const Point &rhs) const {
+    return Vector(x - rhs.x, y - rhs.y, z - rhs.z);
+}
+
+std::ostream &operator<<(std::ostream &os, const Tuple &p) {
+    os << "(" << p.x << ", " << p.y << ", " << p.z << ", " << p.w << ")";
 }

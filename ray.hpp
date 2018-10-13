@@ -1,5 +1,6 @@
 #pragma once
 
+#include "matrix.hpp"
 #include "tuple.hpp"
 
 class Ray {
@@ -9,6 +10,10 @@ public:
 
     Point position(double t) const {
         return origin + direction * t;
+    }
+
+    Ray transform(Matrix<double> tm) const {
+        return Ray(tm * origin, tm * direction);
     }
 
     Point origin;

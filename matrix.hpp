@@ -13,12 +13,15 @@ public:
     // Brace initializer?
     // Type enforcement Matrix<double, 3> ??
     Point operator*(const Point &rhs) const;
+    Vector operator*(const Vector &rhs) const;
     Matrix<T> operator*(const Matrix<T> &rhs) const;
     std::vector<T> &operator[](const int index);
     const std::vector<T> &operator[](const int index) const;
+    bool operator==(const Matrix<T> &rhs) const;
 
     Matrix<T> transpose() const;
     Matrix<T> subMatrix(unsigned skipRow, unsigned skipCol) const;
+    bool hasInverse() const;
     Matrix<T> inverse() const;
     // Matrix<T> translation(T x, T y, T z) const;
 
@@ -28,6 +31,7 @@ public:
 
     static Matrix<T> identity(int n);
     static Matrix<T> translationMatrix(T x, T y, T z);
+    static Matrix<T> scalingMatrix(T w, T h, T d);
 
     unsigned width() const;
     unsigned height() const;
@@ -49,12 +53,32 @@ Matrix<T>::Matrix(unsigned width, unsigned height)
 
 template <typename T>
 Point Matrix<T>::operator*(const Point &rhs) const {
-    // FIXME Ugly hack
-    if (m_height < 3 || m_height > 4)
+    if (m_height != 4)
         throw std::out_of_range("* with incompatible types");
 
-    return Point(rhs.x + (*this)[0][3], rhs.y + (*this)[1][3],
-                 rhs.z + (*this)[2][3]);
+    auto x = rhs.x * (*this)[0][0] + rhs.y * (*this)[0][1] +
+             rhs.z * (*this)[0][2] + (*this)[0][3];
+    auto y = rhs.x * (*this)[1][0] + rhs.y * (*this)[1][1] +
+             rhs.z * (*this)[1][2] + (*this)[1][3];
+    auto z = rhs.x * (*this)[2][0] + rhs.y * (*this)[2][1] +
+             rhs.z * (*this)[2][2] + (*this)[2][3];
+
+    return Point(x, y, z);
+}
+
+template <typename T>
+Vector Matrix<T>::operator*(const Vector &rhs) const {
+    if (m_height != 4)
+        throw std::out_of_range("* with incompatible types");
+
+    auto x =
+        rhs.x * (*this)[0][0] + rhs.y * (*this)[0][1] + rhs.z * (*this)[0][2];
+    auto y =
+        rhs.x * (*this)[1][0] + rhs.y * (*this)[1][1] + rhs.z * (*this)[1][2];
+    auto z =
+        rhs.x * (*this)[2][0] + rhs.y * (*this)[2][1] + rhs.z * (*this)[2][2];
+
+    return Vector(x, y, z);
 }
 
 template <typename T>
@@ -81,6 +105,18 @@ std::vector<T> &Matrix<T>::operator[](const int index) {
 template <typename T>
 const std::vector<T> &Matrix<T>::operator[](const int index) const {
     return m_rows[index];
+}
+
+template <typename T>
+bool Matrix<T>::operator==(const Matrix<T> &rhs) const {
+    for (int row = 0; row < m_width; row++) {
+        for (int col = 0; col < m_height; col++) {
+            if (rhs[row][col] != (*this)[col][row])
+                return false;
+        }
+    }
+
+    return true;
 }
 
 template <typename T>
@@ -118,6 +154,12 @@ Matrix<T> Matrix<T>::subMatrix(unsigned skipRow, unsigned skipCol) const {
     }
 
     return r;
+}
+
+template <typename T>
+bool Matrix<T>::hasInverse() const {
+    T det = determinant();
+    return (det != 0);
 }
 
 template <typename T>
@@ -188,6 +230,15 @@ Matrix<T> Matrix<T>::translationMatrix(T x, T y, T z) {
     t[0][3] = x;
     t[1][3] = y;
     t[2][3] = z;
+    return t;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::scalingMatrix(T w, T h, T d) {
+    auto t = Matrix<T>::identity(4);
+    t[0][0] = w;
+    t[1][1] = h;
+    t[2][2] = d;
     return t;
 }
 

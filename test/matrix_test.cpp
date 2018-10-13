@@ -1,10 +1,16 @@
-// std::cout << (Point(1, 1, 6) == a1 + a2) << std::endl;
-// std::cout << (Point(1, 1, 6) == -Point(-1, -1, -6)) << std::endl;
-// std::cout << (Point(0, 1, 0).magnitude() == 1) << std::endl;
-// std::cout << (Point(0, 1, 0).magnitude() == 1) << std::endl;
-// std::cout << (Point(4, 0, 0).normal() == Point(1, 0, 0)) << std::endl;
-// std::cout << (std::abs(Point(1, 2, 3).normal().magnitude() - 1) <
-// 0.00001f) << std::endl;
+#include <gtest/gtest.h>
+
+#include <cmath>
+
+#include "../tuple.hpp"
+
+TEST(Point, MainStuff) {
+    // ASSERT_EQ(Point(1, 1, 6), a1 + a2);
+    ASSERT_EQ(Vector(0, 1, 0).magnitude(), 1);
+    ASSERT_EQ(Vector(0, 1, 0).magnitude(), 1);
+    ASSERT_EQ(Vector(4, 0, 0).normal(), Vector(1, 0, 0));
+    ASSERT_LT(std::abs(Vector(1, 2, 3).normal().magnitude() - 1), 0.00001f);
+}
 
 // int width = 800;
 // int height = 600;

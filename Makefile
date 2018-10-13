@@ -4,7 +4,7 @@
 # OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 # LDFLAGS := ...
 # CPPFLAGS := ...
-# CXXFLAGS := ...
+CXXFLAGS := -std=c++1z -fopenmp
 
 # raytracer: $(OBJ_FILES)
 #    g++ $(LDFLAGS) -o $@ $^
@@ -15,6 +15,10 @@
 SRC = $(wildcard *.cpp)
 TEST = $(wildcard test/*.cpp)
 
-all: $(SRC)
-	g++ $(SRC) $(TEST) -o raytracer libgtest.a -pthread
+raytracer: $(SRC)
+	g++  $(CXXFLAGS) $(SRC) $(TEST) -o raytracer libgtest.a -pthread
+
+all: raytracer
+
+test: raytracer
 	./raytracer
