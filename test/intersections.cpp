@@ -43,3 +43,16 @@ TEST(Intersections, TheHitIsAlwaysTheLowestNonNegativeIntersection) {
     auto h = Intersection::hit(xs);
     ASSERT_TRUE(*h == i4);
 }
+
+TEST(Intersections, PrecomputingStateOfIntersection) {
+    Ray ray(Point(0, 0, -5), Vector(0, 0, 1));
+    Sphere sphere;
+    auto hit = Intersection(4.0, &sphere);
+    hit.precompute(ray);
+    ASSERT_TRUE(hit.point == Point(0, 0, -1));
+    ASSERT_TRUE(hit.eyeVector == Vector(0, 0, -1));
+    ASSERT_TRUE(hit.normalVector == Vector(0, 0, -1));
+}
+
+// Intersection occurs on the outside
+// Intersection occurs on the inside

@@ -16,7 +16,7 @@ SRC = $(wildcard *.cpp)
 TEST = $(wildcard test/*.cpp)
 
 raytracer: $(SRC) $(TEST)
-	g++  $(CXXFLAGS) $(SRC) $(TEST) -o raytracer libgtest.a -pthread
+	g++  $(CXXFLAGS) $(SRC) $(TEST) -o raytracer libgtest.a -pthread -g
 
 all: raytracer
 

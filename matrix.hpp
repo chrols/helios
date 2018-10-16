@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -32,6 +33,10 @@ public:
     static Matrix<T> identity(int n);
     static Matrix<T> translationMatrix(T x, T y, T z);
     static Matrix<T> scalingMatrix(T w, T h, T d);
+    static Matrix<T> rotationMatrixX(double radians);
+    static Matrix<T> rotationMatrixY(double radians);
+    static Matrix<T> rotationMatrixZ(double radians);
+    static Matrix<T> viewTransform(Point from, Point to, Vector up);
 
     unsigned width() const;
     unsigned height() const;
@@ -218,6 +223,10 @@ T Matrix<T>::cofactor(unsigned row, unsigned col) const {
 template <typename T>
 Matrix<T> Matrix<T>::identity(int n) {
     Matrix<T> i(n, n);
+    for (int y = 0; y < n; y++)
+        for (int x = 0; x < n; x++)
+            i[y][x] = 0;
+
     for (int x = 0; x < n; x++)
         i[x][x] = 1;
 
@@ -240,6 +249,50 @@ Matrix<T> Matrix<T>::scalingMatrix(T w, T h, T d) {
     t[1][1] = h;
     t[2][2] = d;
     return t;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::rotationMatrixX(double radians) {
+    auto t = Matrix<T>::identity(4);
+    t[1][1] = std::cos(radians);
+    t[1][2] = -std::sin(radians);
+    t[2][1] = std::sin(radians);
+    t[2][1] = std::cos(radians);
+    return t;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::rotationMatrixY(double radians) {
+    auto t = Matrix<T>::identity(4);
+    t[0][0] = std::cos(radians);
+    t[0][2] = std::sin(radians);
+    t[2][0] = -std::sin(radians);
+    t[2][2] = std::cos(radians);
+    return t;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::rotationMatrixZ(double radians) {
+    auto t = Matrix<T>::identity(4);
+    t[0][0] = std::cos(radians);
+    t[0][1] = -std::sin(radians);
+    t[1][0] = std::sin(radians);
+    t[1][1] = std::cos(radians);
+    return t;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::viewTransform(Point from, Point to, Vector up) {
+    auto forward = (to - from).normalize();
+    auto upn = up.normalize();
+    auto left = forward.cross(upn);
+    auto true_up = left.cross(forward);
+    Matrix<T> m(4, 4);
+    m[0] = {left.x, left.y, left.z, 0};
+    m[1] = {true_up.x, true_up.y, true_up.z, 0};
+    m[2] = {-forward.x, -forward.y, -forward.z, 0};
+    m[3] = {0, 0, 0, 1};
+    return m * translationMatrix(-from.x, -from.y, -from.z);
 }
 
 template <typename T>

@@ -42,7 +42,6 @@ TEST(Materials, LightingWithEyeOppositeSurfaceLightOffset45Deg) {
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 10, -10), Color(1, 1, 1));
     auto result = lighting(m, light, position, eyev, normalv);
-    std::cerr << result << std::endl;
     ASSERT_TRUE(result == Color(0.7364, 0.7364, 0.7634));
 }
 
@@ -53,8 +52,7 @@ TEST(Materials, LightingWithEyeInPathOfReflectionVector) {
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 10, -10), Color(1, 1, 1));
     auto result = lighting(m, light, position, eyev, normalv);
-    std::cerr << result << std::endl;
-    ASSERT_TRUE(result == Color(1.6364, 16364, 16364));
+    ASSERT_TRUE(result == Color(1.6364, 1.6364, 1.6364));
 }
 
 TEST(Materials, LightingWithLightBehindSurface) {

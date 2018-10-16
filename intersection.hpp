@@ -1,7 +1,8 @@
 #pragma once
 
 #include "common.hpp"
-#include <experimental/optional>
+#include "ray.hpp"
+#include "tuple.hpp"
 #include <vector>
 
 class Object;
@@ -10,11 +11,17 @@ class Intersection {
 public:
     Intersection(double t, const Object *object);
     Intersection(const Intersection &i);
-    double t;
-    const Object *object;
+
+    void precompute(const Ray &ray);
+
     Intersection &operator=(const Intersection &rhs);
     bool operator==(const Intersection &rhs) const;
     static Optional<Intersection> hit(std::vector<Intersection> intersections);
-};
 
-// using Intersections = std::vector<Intersection>;
+    double t;
+    const Object *object;
+    Point point;
+    Vector eyeVector;
+    Vector normalVector;
+    bool inside;
+};
