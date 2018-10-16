@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../tuple.hpp"
+#include "tuple.hpp"
 #include <cmath>
 
 TEST(Vectors, ReflectingVectorApproachingAt45Deg) {

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "../tuple.hpp"
+#include "tuple.hpp"
 
 TEST(Point, MainStuff) {
     // ASSERT_EQ(Point(1, 1, 6), a1 + a2);

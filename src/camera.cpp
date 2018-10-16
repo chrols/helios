@@ -3,14 +3,14 @@
 #include <cmath>
 
 Camera::Camera()
-    : width(256), height(144), fov(3.141 / 3.0),
+    : width(256), height(144), fov(PI / 3.0),
       transform(Matrix<double>::identity(4)) {
     calculatePixelSize();
 }
 
 Canvas Camera::render(const World &world) const {
     Canvas image(width, height);
-    //#pragma omp parallel for schedule(dynamic)
+#pragma omp parallel for schedule(dynamic)
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             auto ray = rayForPixel(x, y);

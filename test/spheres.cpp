@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../ray.hpp"
-#include "../sphere.hpp"
+#include "ray.hpp"
+#include "sphere.hpp"
 #include <cmath>
 
 TEST(Spheres, RayIntersectsSphereAtTwoPoints) {

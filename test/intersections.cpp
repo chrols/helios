@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../intersection.hpp"
-#include "../sphere.hpp"
+#include "intersection.hpp"
+#include "sphere.hpp"
 
 TEST(Intersections, HitWhenAllIntersectionHavePositiveT) {
     Sphere s;

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../matrix.hpp"
-#include "../ray.hpp"
+#include "matrix.hpp"
+#include "ray.hpp"
 
 TEST(Rays, ComputingPointFromDistance) {
     Ray ray(Point(2, 3, 4), Vector(1, 0, 0));

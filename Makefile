@@ -1,24 +1,46 @@
-# SRC_DIR := .../src
-# OBJ_DIR := .../obj
-# SRC_FILES := 
-# OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
-# LDFLAGS := ...
-# CPPFLAGS := ...
-CXXFLAGS := -std=c++1z -fopenmp
+TARGET_EXEC ?= raytracer
 
-# raytracer: $(OBJ_FILES)
-#    g++ $(LDFLAGS) -o $@ $^
+OBJ_DIR ?= obj
+SRC_DIR ?= src
+INC_DIR ?= include
 
-# $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-#    g++ $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+SRCS := $(shell find $(SRC_DIR) -name *.cpp)
+OBJS := $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRCS:.cpp=.o))
+DEPS := $(OBJS:.o=.d)
 
-SRC = $(wildcard *.cpp)
-TEST = $(wildcard test/*.cpp)
+TEST_DIR ?= ./test
+TEST_SRCS := $(shell find $(TEST_DIR) -name *.cpp)
+TEST_OBJS := $(patsubst $(TEST_DIR)/%,$(OBJ_DIR)/test/%,$(TEST_SRCS:.cpp=.o))
 
-raytracer: $(SRC) $(TEST)
-	g++  $(CXXFLAGS) $(SRC) $(TEST) -o raytracer libgtest.a -pthread -g
+INC_FLAGS := -I $(INC_DIR)
 
-all: raytracer
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -fopenmp
+CXXFLAGS ?= -std=c++1z -g # -Wall -Wextra
+LDFLAGS ?= -pthread lib/libgtest.a -fopenmp
 
-test: raytracer
-	./raytracer -test
+$(TARGET_EXEC): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/test/%.o: $(TEST_DIR)/%.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+$(TARGET_EXEC)-test: $(TARGET_EXEC) $(TEST_OBJS)
+	$(CXX) $(OBJS) $(TEST_OBJS) -o $(TARGET_EXEC)-test $(LDFLAGS)
+
+test: $(TARGET_EXEC)-test
+	./$(TARGET_EXEC)-test -test
+
+.PHONY: clean
+
+clean:
+	$(RM) $(OBJ_DIR)/*.o
+	$(RM) $(OBJ_DIR)/*.d
+	$(RM) $(OBJ_DIR)/test/*.o
+	$(RM) $(OBJ_DIR)/test/*.d
+	$(RM) $(TARGET_EXEC)*
+
+-include $(DEPS)
+

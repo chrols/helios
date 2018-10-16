@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../light.hpp"
-#include "../material.hpp"
+#include "light.hpp"
+#include "material.hpp"
 #include <cmath>
 
 TEST(Materials, DefaultMaterial) {

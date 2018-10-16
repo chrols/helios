@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "../light.hpp"
-#include "../tuple.hpp"
+#include "light.hpp"
+#include "tuple.hpp"
 
 TEST(Lights, PointLightHasPositionAndIntensity) {
     auto intensity = Color(1, 1, 1);

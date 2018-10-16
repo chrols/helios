@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../world.hpp"
+#include "world.hpp"
 
 TEST(World, IntersectWorldWithRay) {
     auto world = World::testWorld();

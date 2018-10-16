@@ -33,17 +33,17 @@ int main(int argc, char **argv) {
     floor.material.specular = 0;
 
     Sphere leftWall;
-    // leftWall.transform = Matrix<double>::translationMatrix(0, 0, 5) *
-    //                      Matrix<double>::rotationMatrixY(-PI / 4) *
-    //                      Matrix<double>::rotationMatrixX(PI / 2) *
-    //                      Matrix<double>::scalingMatrix(10, 0.01, 10);
+    leftWall.transform = Matrix<double>::translationMatrix(0, 0, 5) *
+                         Matrix<double>::rotationMatrixY(-PI / 4) *
+                         Matrix<double>::rotationMatrixX(PI / 2) *
+                         Matrix<double>::scalingMatrix(10, 0.01, 10);
     leftWall.material = floor.material;
 
     Sphere rightWall;
-    // rightWall.transform = Matrix<double>::translationMatrix(0, 0, 5) *
-    //                       Matrix<double>::rotationMatrixY(PI / 4) *
-    //                       Matrix<double>::rotationMatrixX(PI / 2) *
-    //                       Matrix<double>::scalingMatrix(10, 0.01, 10);
+    rightWall.transform = Matrix<double>::translationMatrix(0, 0, 5) *
+                          Matrix<double>::rotationMatrixY(PI / 4) *
+                          Matrix<double>::rotationMatrixX(PI / 2) *
+                          Matrix<double>::scalingMatrix(10, 0.01, 10);
     rightWall.material = floor.material;
 
     Sphere middle;
@@ -70,17 +70,17 @@ int main(int argc, char **argv) {
     left.material.specular = 0.3;
 
     World w;
+    w.addObject(left);
     w.addObject(middle);
-    // w.addObject(left);
-    // w.addObject(right);
-    // w.addObject(floor);
-    // w.addObject(leftWall);
-    // w.addObject(rightWall);
+    w.addObject(right);
+    w.addObject(floor);
+    w.addObject(leftWall);
+    w.addObject(rightWall);
     w.addLight(light);
 
     Camera c;
-    c.transform = Matrix<double>::viewTransform(
-        Point(0, 0.15, -5), Point(0, 1, 0), Vector(0, 1, 0));
+    c.transform = Matrix<double>::viewTransform(Point(0, 1, -5), Point(0, 1, 0),
+                                                Vector(0, 1, 0));
 
     c.render(w).write();
 }
