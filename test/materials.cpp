@@ -20,7 +20,7 @@ TEST(Materials, LightingWithEyeBetweenLightAndSurface) {
     auto eyev = Vector(0, 0, -1);
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 0, -10), Color(1, 1, 1));
-    auto result = lighting(m, light, position, eyev, normalv);
+    auto result = Phong::lighting(m, light, position, eyev, normalv);
     ASSERT_TRUE(result == Color(1.9, 1.9, 1.9));
 }
 
@@ -31,7 +31,7 @@ TEST(Materials, LightingWithEyeBetweenLightAndSurfaceEyeOffset45Deg) {
     auto eyev = Vector(0, v, v);
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 0, -10), Color(1, 1, 1));
-    auto result = lighting(m, light, position, eyev, normalv);
+    auto result = Phong::lighting(m, light, position, eyev, normalv);
     ASSERT_TRUE(result == Color(1.0, 1.0, 1.0));
 }
 
@@ -41,7 +41,7 @@ TEST(Materials, LightingWithEyeOppositeSurfaceLightOffset45Deg) {
     auto eyev = Vector(0, 0, -1);
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 10, -10), Color(1, 1, 1));
-    auto result = lighting(m, light, position, eyev, normalv);
+    auto result = Phong::lighting(m, light, position, eyev, normalv);
     ASSERT_TRUE(result == Color(0.7364, 0.7364, 0.7634));
 }
 
@@ -51,7 +51,7 @@ TEST(Materials, LightingWithEyeInPathOfReflectionVector) {
     auto eyev = Vector(0, -std::sqrt(2) / 2, -std::sqrt(2) / 2);
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 10, -10), Color(1, 1, 1));
-    auto result = lighting(m, light, position, eyev, normalv);
+    auto result = Phong::lighting(m, light, position, eyev, normalv);
     ASSERT_TRUE(result == Color(1.6364, 1.6364, 1.6364));
 }
 
@@ -61,19 +61,21 @@ TEST(Materials, LightingWithLightBehindSurface) {
     auto eyev = Vector(0, 0, -1);
     auto normalv = Vector(0, 0, -1);
     auto light = PointLight(Point(0, 0, 10), Color(1, 1, 1));
-    auto result = lighting(m, light, position, eyev, normalv);
+    auto result = Phong::lighting(m, light, position, eyev, normalv);
     ASSERT_TRUE(result == Color(0.1, 0.1, 0.1));
 }
 
-// ---
-
-// Scenario: Lighting with the surface in shadow
-//   Given eyev ← vector(0, 0, -1)
-//     And normalv ← vector(0, 0, -1)
-//     And light ← point_light(point(0, 0, -10), color(1, 1, 1))
-//     And in_shadow ← true
-//   When result ← lighting(m, light, position, eyev, normalv, in_shadow)
-//   Then result = color(0.1, 0.1, 0.1)
+TEST(Materials, LightingWithSurfaceInShadow) {
+    Material material;
+    Point position;
+    auto eyeVector = Vector(0, 0, -1);
+    auto normal = Vector(0, 0, -1);
+    auto light = PointLight(Point(0, 0, -10), Color(1, 1, 1));
+    auto inShadow = true;
+    auto result =
+        Phong::lighting(material, light, position, eyeVector, normal, inShadow);
+    ASSERT_TRUE(result == Color(0.1, 0.1, 0.1));
+}
 
 // Scenario: Lighting with a pattern applied
 //   Given m.pattern ← stripe_pattern(white, black)

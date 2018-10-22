@@ -14,6 +14,8 @@ public:
 
 using Light = PointLight;
 
+namespace Phong {
 Color lighting(const Material &material, const Light &light,
-               const Point &position, const Vector &eyev,
-               const Vector &normalv);
+               const Point &position, const Vector &eyev, const Vector &normalv,
+               bool inShadow = false);
+}

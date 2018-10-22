@@ -17,6 +17,8 @@ void Intersection::precompute(const Ray &ray) {
 
     if (inside)
         normalVector = -normalVector;
+
+    point = point + normalVector * 0.000001;
 }
 
 Intersection &Intersection::operator=(const Intersection &rhs) {
@@ -29,7 +31,7 @@ bool Intersection::operator==(const Intersection &rhs) const {
 }
 
 Optional<Intersection>
-Intersection::hit(std::vector<Intersection> intersections) {
+Intersection::hit(const std::vector<Intersection> &intersections) {
     Intersection i(999, nullptr);
 
     for (auto &e : intersections) {

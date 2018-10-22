@@ -41,6 +41,21 @@ Color World::colorAt(const Ray &ray) const {
     return Color(0, 0, 0);
 }
 
+bool World::isShadowed(const Point &point) const {
+    if (m_light.size() < 1)
+        return false;
+
+    auto v = m_light[0].position - point;
+    auto distance = v.magnitude();
+    auto direction = v.normalize();
+
+    Ray r(point, direction);
+    auto xs = intersect(r);
+    auto hit = Intersection::hit(xs);
+
+    return (hit && hit->t < distance);
+}
+
 World World::testWorld() {
     PointLight light(Point(-10, 10, -10), Color(1, 1, 1));
     Sphere s1, s2;
@@ -57,6 +72,7 @@ World World::testWorld() {
 }
 
 Color World::_shadeHit(const Intersection &hit) const {
-    return lighting(hit.object->material, m_light[0], hit.point, hit.eyeVector,
-                    hit.normalVector);
+    return Phong::lighting(hit.object->material, m_light[0], hit.point,
+                           hit.eyeVector, hit.normalVector,
+                           isShadowed(hit.point));
 }

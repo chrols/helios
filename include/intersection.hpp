@@ -16,7 +16,8 @@ public:
 
     Intersection &operator=(const Intersection &rhs);
     bool operator==(const Intersection &rhs) const;
-    static Optional<Intersection> hit(std::vector<Intersection> intersections);
+    static Optional<Intersection>
+    hit(const std::vector<Intersection> &intersections);
 
     double t;
     const Object *object;

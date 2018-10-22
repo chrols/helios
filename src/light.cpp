@@ -2,11 +2,16 @@
 
 #include <cmath>
 
-Color lighting(const Material &material, const Light &light, const Point &point,
-               const Vector &eyev, const Vector &normalv) {
+Color Phong::lighting(const Material &material, const Light &light,
+                      const Point &point, const Vector &eyev,
+                      const Vector &normalv, bool inShadow) {
     auto effectiveColor = material.color * light.intensity;
-    auto lightv = (light.position - point).normalize();
     auto ambient = effectiveColor * material.ambient;
+
+    if (inShadow)
+        return ambient;
+
+    auto lightv = (light.position - point).normalize();
     auto lightDotNormal = lightv.dot(normalv);
 
     Color diffuse, specular;
