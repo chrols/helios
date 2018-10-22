@@ -63,8 +63,8 @@ double Vector::dot(const Vector &rhs) const {
 }
 
 Vector Vector::cross(const Vector &rhs) const {
-    return Vector(y * rhs.z + z * rhs.y, z * rhs.x + x * rhs.z,
-                  x * rhs.y + y * rhs.x);
+    return Vector(y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z,
+                  x * rhs.y - y * rhs.x);
 }
 
 Point::Point() : Tuple(0.0, 0.0, 0.0, 1.0) {}

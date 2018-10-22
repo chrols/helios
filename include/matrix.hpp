@@ -116,8 +116,12 @@ template <typename T>
 bool Matrix<T>::operator==(const Matrix<T> &rhs) const {
     for (int row = 0; row < m_width; row++) {
         for (int col = 0; col < m_height; col++) {
-            if (rhs[row][col] != (*this)[col][row])
+            if (rhs[col][row] != (*this)[col][row]) {
+                std::cerr << rhs[col][row] << "!=" << (*this)[col][row]
+                          << std::endl;
+                std::cerr << col << " " << row << std::endl;
                 return false;
+            }
         }
     }
 
@@ -257,7 +261,7 @@ Matrix<T> Matrix<T>::rotationMatrixX(double radians) {
     t[1][1] = std::cos(radians);
     t[1][2] = -std::sin(radians);
     t[2][1] = std::sin(radians);
-    t[2][1] = std::cos(radians);
+    t[2][2] = std::cos(radians);
     return t;
 }
 
@@ -315,4 +319,6 @@ std::ostream &operator<<(std::ostream &os, const Matrix<T> &m) {
 
         std::cout << "]\n";
     }
+
+    return os;
 }

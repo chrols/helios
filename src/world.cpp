@@ -31,9 +31,14 @@ Color World::colorAt(const Ray &ray) const {
     if (xs.size() == 0)
         return Color(0, 0, 0);
 
-    xs[0].precompute(ray);
+    for (auto &e : xs) {
+        if (e.t >= 0) {
+            e.precompute(ray);
+            return _shadeHit(e);
+        }
+    }
 
-    return _shadeHit(xs[0]);
+    return Color(0, 0, 0);
 }
 
 World World::testWorld() {
