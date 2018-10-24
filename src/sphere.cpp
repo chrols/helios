@@ -3,20 +3,15 @@
 
 Sphere::Sphere() {}
 
-std::vector<Intersection> Sphere::intersect(const Ray &r) const {
-    std::vector<Intersection> xs;
-    if (!transform.hasInverse())
-        return xs;
-
-    auto tr = r.transform(transform.inverse());
-    auto sphereToRay = tr.origin - Point(0, 0, 0);
-    auto a = tr.direction.dot(tr.direction);
-    auto b = 2 * tr.direction.dot(sphereToRay);
+std::vector<Intersection> Sphere::localIntersect(const Ray &r) const {
+    auto sphereToRay = r.origin - Point(0, 0, 0);
+    auto a = r.direction.dot(r.direction);
+    auto b = 2 * r.direction.dot(sphereToRay);
     auto c = sphereToRay.dot(sphereToRay) - 1;
     auto discriminant = b * b - 4 * a * c;
 
     if (discriminant < 0)
-        return std::vector<Intersection>();
+        return {};
 
     auto t1 = (-b - std::sqrt(discriminant)) / (2 * a);
     auto t2 = (-b + std::sqrt(discriminant)) / (2 * a);
@@ -24,19 +19,12 @@ std::vector<Intersection> Sphere::intersect(const Ray &r) const {
     if (t1 > t2)
         std::swap(t1, t2);
 
+    std::vector<Intersection> xs;
     xs.push_back(Intersection(t1, this));
     xs.push_back(Intersection(t2, this));
-
     return xs;
 }
 
-Optional<Vector> Sphere::normal(const Point &p) const {
-    if (!transform.hasInverse())
-        return {};
-
-    auto inverse = transform.inverse();
-    auto objectPoint = inverse * p;
-    auto objectNormal = objectPoint - Point(0, 0, 0);
-    auto worldNormal = inverse.transpose() * objectNormal;
-    return worldNormal.normalize();
+Optional<Vector> Sphere::localNormal(const Point &p) const {
+    return (p - Point(0, 0, 0));
 }

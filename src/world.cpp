@@ -8,7 +8,7 @@ std::vector<Intersection> World::intersect(const Ray &ray) const {
     std::vector<Intersection> xs;
 
     for (auto &e : m_object) {
-        auto subXs = e.intersect(ray);
+        auto subXs = e->intersect(ray);
         xs.insert(xs.end(), subXs.begin(), subXs.end());
     }
 
@@ -22,8 +22,8 @@ void World::addLight(const PointLight &light) {
     m_light.push_back(light);
 }
 
-void World::addObject(const Sphere &object) {
-    m_object.push_back(object);
+void World::addObject(const Object &object) {
+    m_object.push_back(&object);
 }
 
 Color World::colorAt(const Ray &ray) const {
@@ -68,6 +68,7 @@ World World::testWorld() {
     w.addLight(light);
     w.addObject(s1);
     w.addObject(s2);
+
     return w;
 }
 

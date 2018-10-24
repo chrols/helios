@@ -11,7 +11,7 @@ public:
     World();
     std::vector<Intersection> intersect(const Ray &ray) const;
     void addLight(const Light &light);
-    void addObject(const Sphere &object);
+    void addObject(const Object &object);
     Color colorAt(const Ray &ray) const;
     bool isShadowed(const Point &point) const;
 
@@ -21,5 +21,5 @@ private:
     Color _shadeHit(const Intersection &hit) const;
 
     std::vector<Light> m_light;
-    std::vector<Sphere> m_object;
+    std::vector<const Object *> m_object;
 };

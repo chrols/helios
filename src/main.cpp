@@ -5,6 +5,7 @@
 #include "intersection.hpp"
 #include "light.hpp"
 #include "matrix.hpp"
+#include "plane.hpp"
 #include "ray.hpp"
 #include "sphere.hpp"
 #include "tuple.hpp"
@@ -69,13 +70,17 @@ int main(int argc, char **argv) {
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
 
+    Plane plane;
+    plane.material = floor.material;
+
     World w;
     w.addObject(left);
     w.addObject(middle);
     w.addObject(right);
-    w.addObject(floor);
-    w.addObject(leftWall);
-    w.addObject(rightWall);
+    w.addObject(plane);
+    // w.addObject(floor);
+    // w.addObject(leftWall);
+    // w.addObject(rightWall);
     w.addLight(light);
 
     Camera c;
