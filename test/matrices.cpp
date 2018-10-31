@@ -37,12 +37,12 @@ TEST(Matrix, ArbitraryViewTransformation) {
     Vector up(1, 1, 0);
     auto t = Matrix<double>::viewTransform(from, to, up);
     std::cerr << t;
-    ASSERT_TRUE(t[0] ==
-                std::vector<double>({-0.50709, 0.50709, 0.67612, -2.36643}));
-    ASSERT_TRUE(t[1] ==
-                std::vector<double>({0.76772, 0.60609, 0.12122, -2.82843}));
-    ASSERT_TRUE(t[2] ==
-                std::vector<double>({-0.35857, 0.59761, -0.71714, 0.00000}));
-    ASSERT_TRUE(t[3] ==
-                std::vector<double>({0.00000, 0.00000, 0.00000, 1.00000}));
+
+    Matrix<double> out(4, 4);
+    out[0] = std::vector<double>({-0.507093, 0.507093, 0.676123, -2.36643});
+    out[1] = std::vector<double>({0.76772, 0.60609, 0.12122, -2.82843});
+    out[2] = std::vector<double>({-0.35857, 0.59761, -0.71714, 0.00000});
+    out[3] = std::vector<double>({0.00000, 0.00000, 0.00000, 1.00000});
+
+    ASSERT_TRUE(t == out);
 }

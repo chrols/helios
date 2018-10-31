@@ -90,7 +90,7 @@ TEST(Materials, LightingWithSurfaceInShadow) {
 //   Then c1 = white
 //     And c2 = black
 
-TEST(Materials, DISABLED_LightingWithPatternApplied) {
+TEST(Materials, LightingWithPatternApplied) {
     Material m;
     m.pattern = StripePattern(Color(1, 1, 1), Color(0, 0, 0));
     m.ambient = 1;

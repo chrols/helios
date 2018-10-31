@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "common.hpp"
 #include "tuple.hpp"
 
 template <typename T>
@@ -116,7 +117,7 @@ template <typename T>
 bool Matrix<T>::operator==(const Matrix<T> &rhs) const {
     for (int row = 0; row < m_width; row++) {
         for (int col = 0; col < m_height; col++) {
-            if (rhs[col][row] != (*this)[col][row]) {
+            if (!almostEqual(rhs[col][row], (*this)[col][row])) {
                 std::cerr << rhs[col][row] << "!=" << (*this)[col][row]
                           << std::endl;
                 std::cerr << col << " " << row << std::endl;
