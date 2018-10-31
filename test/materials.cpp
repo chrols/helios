@@ -89,3 +89,18 @@ TEST(Materials, LightingWithSurfaceInShadow) {
 //     And c2 ← lighting(m, light, point(1.1, 0, 0), eyev, normalv, false)
 //   Then c1 = white
 //     And c2 = black
+
+TEST(Materials, DISABLED_LightingWithPatternApplied) {
+    Material m;
+    m.pattern = StripePattern(Color(1, 1, 1), Color(0, 0, 0));
+    m.ambient = 1;
+    m.diffuse = 0;
+    m.specular = 0;
+    Vector eye(0, 0, -1);
+    Vector normal(0, 0, -1);
+    auto light = PointLight(Point(0, 0, -10), Color(1, 1, 1));
+    auto c1 = Phong::lighting(m, light, Point(0.9, 0, 0), eye, normal);
+    auto c2 = Phong::lighting(m, light, Point(1.1, 0, 0), eye, normal);
+    ASSERT_TRUE(c1 == Color(1, 1, 1));
+    ASSERT_TRUE(c2 == Color(0, 0, 0));
+}

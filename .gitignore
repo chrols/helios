@@ -3,3 +3,4 @@ raytracer
 *.out
 *.a
 *.d
+*.ppm
