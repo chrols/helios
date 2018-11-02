@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
     middle.material.color = Color(0.1, 1, 0.5);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
+    middle.material.pattern = StripePattern(Color(1, 0, 0), Color(0, 1, 0));
 
     Sphere right;
     right.transform = Matrix<double>::translationMatrix(1.5, 0.5, -0.5) *
@@ -69,9 +70,11 @@ int main(int argc, char **argv) {
     left.material.color = Color(1, 0.8, 0.1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
+    left.material.pattern = StripePattern(Color(1, 0, 0), Color(0, 1, 0));
 
     Plane plane;
     plane.material = floor.material;
+    plane.material.pattern = StripePattern(Color(1, 1, 1), Color(0, 0, 0));
 
     World w;
     w.addObject(left);

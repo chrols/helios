@@ -1,11 +1,22 @@
 #include "light.hpp"
 
+#include "pattern.hpp"
 #include <cmath>
 
 Color Phong::lighting(const Material &material, const Light &light,
                       const Point &point, const Vector &eyev,
-                      const Vector &normalv, bool inShadow) {
-    auto effectiveColor = material.color * light.intensity;
+                      const Vector &normalv, bool inShadow,
+                      const Object &object) {
+
+    Color effectiveColor;
+
+    if (material.pattern) {
+        effectiveColor = material.pattern->patternAtObject(point, object);
+    } else {
+        effectiveColor = material.color;
+    }
+
+    effectiveColor = effectiveColor * light.intensity;
     auto ambient = effectiveColor * material.ambient;
 
     if (inShadow)

@@ -24,10 +24,6 @@ TEST(Matrix, ViewTransformationMovesWorld) {
     Point to(0, 0, 0);
     Vector up(0, 1, 0);
     auto t = Matrix<double>::viewTransform(from, to, up);
-    std::cerr << t;
-    std::cerr << Matrix<double>::translationMatrix(0, 0, -8);
-    std::cerr << std::endl;
-
     ASSERT_TRUE(t == Matrix<double>::translationMatrix(0, 0, -8));
 }
 
@@ -36,7 +32,6 @@ TEST(Matrix, ArbitraryViewTransformation) {
     Point to(4, -2, 8);
     Vector up(1, 1, 0);
     auto t = Matrix<double>::viewTransform(from, to, up);
-    std::cerr << t;
 
     Matrix<double> out(4, 4);
     out[0] = std::vector<double>({-0.507093, 0.507093, 0.676123, -2.36643});

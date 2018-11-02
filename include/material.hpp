@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common.hpp"
 #include "pattern.hpp"
 #include "tuple.hpp"
 
@@ -10,7 +11,7 @@ public:
     bool operator==(const Material &rhs) const;
 
     Color color;
-    StripePattern pattern;
+    Optional<StripePattern> pattern;
     double ambient;
     double diffuse;
     double specular;

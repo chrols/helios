@@ -75,5 +75,5 @@ World World::testWorld() {
 Color World::_shadeHit(const Intersection &hit) const {
     return Phong::lighting(hit.object->material, m_light[0], hit.point,
                            hit.eyeVector, hit.normalVector,
-                           isShadowed(hit.point));
+                           isShadowed(hit.point), *hit.object);
 }

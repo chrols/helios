@@ -1,28 +1,28 @@
 #pragma once
 
+#include <cmath>
+
+#include "matrix.hpp"
 #include "tuple.hpp"
 
-#include <cmath>
+class Object;
 
 class Pattern {
 public:
-    virtual Color stripeAt(const Point &point) const = 0;
+    Pattern();
+    virtual Color patternAt(const Point &point) const = 0;
+    Color patternAtObject(const Point &point, const Object &object) const;
+    Matrix<double> transform;
+};
+
+class TestPattern : public Pattern {
+    Color patternAt(const Point &point) const override;
 };
 
 class StripePattern : public Pattern {
 public:
-    StripePattern(Color a, Color b) : m_a(a), m_b(b) {}
-    Color stripeAt(const Point &point) const override {
-        Color a = m_a;
-        Color b = m_b;
-
-        if (int(std::floor(point.x)) % 2 == 0) {
-            std::cerr << "A" << std::endl;
-            return a;
-        } else {
-            return b;
-        }
-    }
+    StripePattern(Color a, Color b);
+    Color patternAt(const Point &point) const override;
 
 private:
     Color m_a, m_b;

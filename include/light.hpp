@@ -1,6 +1,7 @@
 #pragma once
 
 #include "material.hpp"
+#include "sphere.hpp"
 #include "tuple.hpp"
 
 class PointLight {
@@ -17,5 +18,5 @@ using Light = PointLight;
 namespace Phong {
 Color lighting(const Material &material, const Light &light,
                const Point &position, const Vector &eyev, const Vector &normalv,
-               bool inShadow = false);
+               bool inShadow = false, const Object &object = Sphere());
 }

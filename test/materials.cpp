@@ -77,19 +77,6 @@ TEST(Materials, LightingWithSurfaceInShadow) {
     ASSERT_TRUE(result == Color(0.1, 0.1, 0.1));
 }
 
-// Scenario: Lighting with a pattern applied
-//   Given m.pattern ← stripe_pattern(white, black)
-//     And m.ambient ← 1
-//     And m.diffuse ← 0
-//     And m.specular ← 0
-//     And eyev ← vector(0, 0, -1)
-//     And normalv ← vector(0, 0, -1)
-//     And light ← point_light(point(0, 0, -10), color(1, 1, 1))
-//   When c1 ← lighting(m, light, point(0.9, 0, 0), eyev, normalv, false)
-//     And c2 ← lighting(m, light, point(1.1, 0, 0), eyev, normalv, false)
-//   Then c1 = white
-//     And c2 = black
-
 TEST(Materials, LightingWithPatternApplied) {
     Material m;
     m.pattern = StripePattern(Color(1, 1, 1), Color(0, 0, 0));
