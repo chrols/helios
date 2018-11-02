@@ -105,8 +105,10 @@ bool Color::operator==(const Color &rhs) const {
 
 std::ostream &operator<<(std::ostream &os, const Tuple &p) {
     os << "(" << p.x << ", " << p.y << ", " << p.z << ", " << p.w << ")";
+    return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const Color &p) {
     os << "(" << p.r << ", " << p.g << ", " << p.b << ")";
+    return os;
 }

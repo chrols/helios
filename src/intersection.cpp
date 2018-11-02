@@ -24,6 +24,7 @@ void Intersection::precompute(const Ray &ray) {
 Intersection &Intersection::operator=(const Intersection &rhs) {
     t = rhs.t;
     object = rhs.object;
+    return (*this);
 }
 
 bool Intersection::operator==(const Intersection &rhs) const {
