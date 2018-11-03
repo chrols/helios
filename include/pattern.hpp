@@ -27,3 +27,30 @@ public:
 private:
     Color m_a, m_b;
 };
+
+class GradientPattern : public Pattern {
+public:
+    GradientPattern(Color a, Color b);
+    Color patternAt(const Point &point) const override;
+
+private:
+    Color m_a, m_b;
+};
+
+class RingPattern : public Pattern {
+public:
+    RingPattern(Color a, Color b);
+    Color patternAt(const Point &point) const override;
+
+private:
+    Color m_a, m_b;
+};
+
+class CheckersPattern : public Pattern {
+public:
+    CheckersPattern(Color a, Color b);
+    Color patternAt(const Point &point) const override;
+
+private:
+    Color m_a, m_b;
+};

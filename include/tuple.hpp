@@ -45,9 +45,30 @@ public:
 
 class Color {
 public:
+    enum ColorName {
+        Aqua,
+        Black,
+        Blue,
+        Fuchsia,
+        Gray,
+        Green,
+        Lime,
+        Maroon,
+        Navy,
+        Olive,
+        Purple,
+        Red,
+        Silver,
+        Teal,
+        White,
+        Yellow
+    };
+
     Color();
+    Color(ColorName name);
     Color(double r, double g, double b);
 
+    Color operator-(const Color &rhs) const;
     Color operator*(double scalar) const;
     Color operator*(const Color &rhs) const;
     Color operator+(const Color &rhs) const;

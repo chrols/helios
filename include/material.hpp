@@ -11,7 +11,7 @@ public:
     bool operator==(const Material &rhs) const;
 
     Color color;
-    Optional<StripePattern> pattern;
+    Pattern *pattern;
     double ambient;
     double diffuse;
     double specular;

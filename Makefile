@@ -15,7 +15,7 @@ TEST_OBJS := $(patsubst $(TEST_DIR)/%,$(OBJ_DIR)/test/%,$(TEST_SRCS:.cpp=.o))
 INC_FLAGS := -I $(INC_DIR)
 
 CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -fopenmp
-CXXFLAGS ?= -std=c++1z -g # -Wall -Wextra
+CXXFLAGS ?= -std=c++1z -g # -Wall -Wextra -Wpedantic
 LDFLAGS ?= -pthread lib/libgtest.a -fopenmp
 
 $(TARGET_EXEC): $(OBJS)

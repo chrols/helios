@@ -85,7 +85,96 @@ Vector Point::operator-(const Point &rhs) const {
 
 Color::Color() : r(0), g(0), b(0) {}
 
+Color::Color(ColorName name) {
+    switch (name) {
+    case Aqua:
+        r = 0;
+        g = 1;
+        b = 1;
+        break;
+    case Black:
+        r = 0;
+        g = 0;
+        b = 0;
+        break;
+    case Blue:
+        r = 0;
+        g = 0;
+        b = 1;
+        break;
+    case Fuchsia:
+        r = 1;
+        g = 0;
+        b = 1;
+        break;
+    case Gray:
+        r = 0.5;
+        g = 0.5;
+        b = 0.5;
+        break;
+    case Green:
+        r = 0;
+        g = 0.5;
+        b = 0;
+        break;
+    case Lime:
+        r = 0;
+        g = 1;
+        b = 0;
+        break;
+    case Maroon:
+        r = 0.5;
+        g = 0;
+        b = 0;
+        break;
+    case Navy:
+        r = 0;
+        g = 0;
+        b = 0.5;
+        break;
+    case Olive:
+        r = 0.5;
+        g = 0.5;
+        b = 0;
+        break;
+    case Purple:
+        r = 0.5;
+        g = 0;
+        b = 0.5;
+        break;
+    case Red:
+        r = 1;
+        g = 0;
+        b = 0;
+        break;
+    case Silver:
+        r = 0;
+        g = 0.75;
+        b = 0.75;
+        break;
+    case Teal:
+        r = 0;
+        g = 0.5;
+        b = 0.5;
+        break;
+    case White:
+        r = 1;
+        g = 1;
+        b = 1;
+        break;
+    case Yellow:
+        r = 1;
+        g = 1;
+        b = 0;
+        break;
+    }
+}
+
 Color::Color(double r, double g, double b) : r(r), g(g), b(b) {}
+
+Color Color::operator-(const Color &rhs) const {
+    return Color(r - rhs.r, g - rhs.g, b - rhs.b);
+}
 
 Color Color::operator*(double scalar) const {
     return Color(r * scalar, g * scalar, b * scalar);

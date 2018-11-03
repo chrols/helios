@@ -4,17 +4,17 @@
 #include "sphere.hpp"
 
 TEST(Patterns, StripePatternConstantInY) {
-    StripePattern pattern(Color(1, 1, 1), Color(0, 0, 0));
-    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 0)) == Color(1, 1, 1));
-    ASSERT_TRUE(pattern.patternAt(Point(0, 1, 0)) == Color(1, 1, 1));
-    ASSERT_TRUE(pattern.patternAt(Point(0, 2, 0)) == Color(1, 1, 1));
+    StripePattern pattern(Color::White, Color::White);
+    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 0)) == Color::White);
+    ASSERT_TRUE(pattern.patternAt(Point(0, 1, 0)) == Color::White);
+    ASSERT_TRUE(pattern.patternAt(Point(0, 2, 0)) == Color::White);
 }
 
 TEST(Patterns, StripePatternConstantInZ) {
-    StripePattern pattern(Color(1, 1, 1), Color(0, 0, 0));
-    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 0)) == Color(1, 1, 1));
-    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 1)) == Color(1, 1, 1));
-    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 2)) == Color(1, 1, 1));
+    StripePattern pattern(Color::White, Color::White);
+    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 0)) == Color::White);
+    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 1)) == Color::White);
+    ASSERT_TRUE(pattern.patternAt(Point(0, 0, 2)) == Color::White);
 }
 
 TEST(Patterns, StripePatternAlternatesInX) {
@@ -63,4 +63,33 @@ TEST(Patterns, PatternWithBothObjectAndPatternTransformation) {
     pattern.transform = Matrix<double>::translationMatrix(0.5, 1, 1.5);
     auto c = pattern.patternAtObject(Point(2.5, 3, 3.5), s);
     ASSERT_EQ(c, Color(0.75, 0.5, 0.25));
+}
+
+TEST(Patterns, GradientLinearlyInterpolatesBetweenColors) {
+    GradientPattern pattern(Color::Black, Color::White);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0, 0)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(0.25, 0, 0)), Color(0.25, 0.25, 0.25));
+    ASSERT_EQ(pattern.patternAt(Point(0.5, 0, 0)), Color(0.5, 0.5, 0.5));
+    ASSERT_EQ(pattern.patternAt(Point(0.75, 0, 0)), Color(0.75, 0.75, 0.75));
+}
+
+TEST(Pattern, CheckersSholdRepeatInX) {
+    CheckersPattern pattern(Color::Black, Color::White);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0, 0)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(0.99, 0, 0)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(1.01, 0, 0)), Color::White);
+}
+
+TEST(Pattern, CheckersSholdRepeatInY) {
+    CheckersPattern pattern(Color::Black, Color::White);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0, 0)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0.99, 0)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(0, 1.01, 0)), Color::White);
+}
+
+TEST(Pattern, CheckersSholdRepeatInZ) {
+    CheckersPattern pattern(Color::Black, Color::White);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0, 0)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0, 0.99)), Color::Black);
+    ASSERT_EQ(pattern.patternAt(Point(0, 0, 1.01)), Color::White);
 }
