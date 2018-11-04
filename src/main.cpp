@@ -70,10 +70,12 @@ int main(int argc, char **argv) {
     left.material.color = Color(1, 0.8, 0.1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
-    left.material.pattern = new RingPattern(Color(1, 0, 0), Color(0, 1, 0));
+    left.material.reflective = 1.0;
+    left.material.pattern = new RingPattern(Color::Lime, Color::Green);
 
     Plane plane;
     plane.material = floor.material;
+    plane.material.reflective = 0.9;
     plane.material.pattern = new CheckersPattern(Color::Teal, Color::Red);
 
     World w;

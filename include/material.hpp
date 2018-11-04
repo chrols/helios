@@ -16,4 +16,5 @@ public:
     double diffuse;
     double specular;
     double shininess;
+    double reflective;
 };

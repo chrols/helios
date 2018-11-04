@@ -5,6 +5,7 @@
 #include "tuple.hpp"
 #include <vector>
 
+class World;
 class Object;
 
 class Intersection {
@@ -13,6 +14,7 @@ public:
     Intersection(const Intersection &i);
 
     void precompute(const Ray &ray);
+    Color reflectedColor(const World &world) const;
 
     Intersection &operator=(const Intersection &rhs);
     bool operator==(const Intersection &rhs) const;
@@ -24,5 +26,6 @@ public:
     Point point;
     Vector eyeVector;
     Vector normalVector;
+    Vector reflectVector;
     bool inside;
 };

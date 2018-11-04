@@ -26,7 +26,8 @@ void World::addObject(const Object &object) {
     m_object.push_back(&object);
 }
 
-Color World::colorAt(const Ray &ray) const {
+// FIXME Move to intersection?
+Color World::colorAt(const Ray &ray, unsigned remaining) const {
     auto xs = intersect(ray);
     if (xs.size() == 0)
         return Color(0, 0, 0);
@@ -34,11 +35,26 @@ Color World::colorAt(const Ray &ray) const {
     for (auto &e : xs) {
         if (e.t >= 0) {
             e.precompute(ray);
-            return _shadeHit(e);
+            return _shadeHit(e, remaining);
         }
     }
 
     return Color(0, 0, 0);
+}
+
+// FIXME Move to intersection?
+Color World::reflectedColor(const Intersection &hit, unsigned remaining) const {
+
+    if (remaining == 0 || (!hit.object) ||
+        hit.object->material.reflective == 0) {
+        return Color::Black;
+    }
+
+    // std::cerr << "ACTUAL" << remaining << std::endl;
+
+    Ray reflectRay(hit.point, hit.reflectVector);
+    auto color = colorAt(reflectRay, --remaining);
+    return color * hit.object->material.reflective;
 }
 
 bool World::isShadowed(const Point &point) const {
@@ -58,10 +74,13 @@ bool World::isShadowed(const Point &point) const {
 
 World World::testWorld() {
     PointLight light(Point(-10, 10, -10), Color(1, 1, 1));
-    Sphere s1, s2;
+
+    Sphere s1;
     s1.material.color = Color(0.8, 1.0, 0.6);
     s1.material.diffuse = 0.7;
     s1.material.specular = 0.2;
+
+    Sphere s2;
     s2.transform = Matrix<double>::scalingMatrix(0.5, 0.5, 0.5);
 
     World w;
@@ -72,8 +91,12 @@ World World::testWorld() {
     return w;
 }
 
-Color World::_shadeHit(const Intersection &hit) const {
-    return Phong::lighting(hit.object->material, m_light[0], hit.point,
-                           hit.eyeVector, hit.normalVector,
-                           isShadowed(hit.point), *hit.object);
+Color World::_shadeHit(const Intersection &hit, unsigned remaining) const {
+    auto surface = Phong::lighting(hit.object->material, m_light[0], hit.point,
+                                   hit.eyeVector, hit.normalVector,
+                                   isShadowed(hit.point), *hit.object);
+
+    auto reflected = reflectedColor(hit, remaining);
+
+    return (surface + reflected);
 }

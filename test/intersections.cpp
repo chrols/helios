@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "intersection.hpp"
+#include "plane.hpp"
 #include "sphere.hpp"
 
 TEST(Intersections, HitWhenAllIntersectionHavePositiveT) {
@@ -56,3 +57,13 @@ TEST(Intersections, PrecomputingStateOfIntersection) {
 
 // Intersection occurs on the outside
 // Intersection occurs on the inside
+
+TEST(Intersections, PrecomputingReflectionVector) {
+    Plane shape;
+    Ray ray(Point(0, 1, -1),
+            Vector(0, -std::sqrt(2) / 2.0, std::sqrt(2) / 2.0));
+    Intersection hit(std::sqrt(2), &shape);
+    hit.precompute(ray);
+    ASSERT_EQ(hit.reflectVector,
+              Vector(0, std::sqrt(2) / 2.0, std::sqrt(2) / 2.0));
+}

@@ -19,6 +19,7 @@ void Intersection::precompute(const Ray &ray) {
         normalVector = -normalVector;
 
     point = point + normalVector * 0.000001;
+    reflectVector = ray.direction.reflect(normalVector);
 }
 
 Intersection &Intersection::operator=(const Intersection &rhs) {
