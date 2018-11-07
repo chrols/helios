@@ -7,7 +7,7 @@ TEST(Vectors, ReflectingVectorApproachingAt45Deg) {
     auto v = Vector(1, -1, 0);
     auto n = Vector(0, 1, 0);
     auto r = v.reflect(n);
-    ASSERT_TRUE(r == Vector(1, 1, 0));
+    ASSERT_EQ(r, Vector(1, 1, 0));
 }
 
 TEST(Vectors, ReflectingVectorOffSlantedSurface) {
@@ -15,5 +15,5 @@ TEST(Vectors, ReflectingVectorOffSlantedSurface) {
     auto v = Vector(0, -1, 0);
     auto n = Vector(d, d, 0);
     auto r = v.reflect(n);
-    ASSERT_TRUE(r == Vector(1, 0, 0));
+    ASSERT_EQ(r, Vector(1, 0, 0));
 }

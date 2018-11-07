@@ -77,4 +77,6 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, const Tuple &p);
+std::ostream &operator<<(std::ostream &os, const Point &p);
 std::ostream &operator<<(std::ostream &os, const Color &p);
+std::ostream &operator<<(std::ostream &os, const Vector &p);

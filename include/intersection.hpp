@@ -13,7 +13,8 @@ public:
     Intersection(double t, const Object *object);
     Intersection(const Intersection &i);
 
-    void precompute(const Ray &ray);
+    void precompute(const Ray &ray, const std::vector<Intersection> &xs =
+                                        std::vector<Intersection>());
     Color reflectedColor(const World &world) const;
 
     Intersection &operator=(const Intersection &rhs);
@@ -28,4 +29,7 @@ public:
     Vector normalVector;
     Vector reflectVector;
     bool inside;
+    double n1;
+    double n2;
+    Point underPoint;
 };

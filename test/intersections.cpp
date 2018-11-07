@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <utility>
+
 #include "intersection.hpp"
 #include "plane.hpp"
 #include "sphere.hpp"
@@ -50,9 +52,9 @@ TEST(Intersections, PrecomputingStateOfIntersection) {
     Sphere sphere;
     auto hit = Intersection(4.0, &sphere);
     hit.precompute(ray);
-    ASSERT_TRUE(hit.point == Point(0, 0, -1));
-    ASSERT_TRUE(hit.eyeVector == Vector(0, 0, -1));
-    ASSERT_TRUE(hit.normalVector == Vector(0, 0, -1));
+    ASSERT_EQ(hit.point, Point(0, 0, -1));
+    ASSERT_EQ(hit.eyeVector, Vector(0, 0, -1));
+    ASSERT_EQ(hit.normalVector, Vector(0, 0, -1));
 }
 
 // Intersection occurs on the outside
@@ -66,4 +68,47 @@ TEST(Intersections, PrecomputingReflectionVector) {
     hit.precompute(ray);
     ASSERT_EQ(hit.reflectVector,
               Vector(0, std::sqrt(2) / 2.0, std::sqrt(2) / 2.0));
+}
+
+TEST(Intersections, NsAtVariousIntersections) {
+    auto a = Sphere::glassSphere();
+    a.transform = Matrix<double>::scalingMatrix(2, 2, 2);
+    a.material.refraction = 1.5;
+
+    auto b = Sphere::glassSphere();
+    b.transform = Matrix<double>::translationMatrix(0, 0, -0.25);
+    b.material.refraction = 2.0;
+
+    auto c = Sphere::glassSphere();
+    c.transform = Matrix<double>::translationMatrix(0, 0, 0.25);
+    c.material.refraction = 2.5;
+
+    Ray ray(Point(0, 0, -4), Vector(0, 0, 1));
+
+    std::vector<Intersection> xs;
+    xs.emplace_back(Intersection(2, &a));
+    xs.emplace_back(Intersection(2.75, &b));
+    xs.emplace_back(Intersection(3.25, &c));
+    xs.emplace_back(Intersection(4.75, &b));
+    xs.emplace_back(Intersection(5.25, &c));
+    xs.emplace_back(Intersection(6, &a));
+
+    std::vector<double> expectedN1 = {1.0, 1.5, 2.0, 2.5, 2.5, 1.5};
+    std::vector<double> expectedN2 = {1.5, 2.0, 2.5, 2.5, 1.5, 1.0};
+
+    for (int i = 0; i < 5; i++) {
+        xs[i].precompute(ray, xs);
+        ASSERT_EQ(xs[i].n1, expectedN1[i]);
+        ASSERT_EQ(xs[i].n2, expectedN2[i]);
+    }
+}
+
+TEST(Intersections, TheUnderPointIsOffsetBelowSurface) {
+    auto sphere = Sphere::glassSphere();
+    Ray ray(Point(0, 0, -5), Vector(0, 0, 1));
+    Intersection hit(4, &sphere);
+    std::vector<Intersection> xs = {hit};
+    hit.precompute(ray, xs);
+    ASSERT_GT(hit.underPoint.z, -1);
+    ASSERT_LT(hit.underPoint.z, -0.9);
 }

@@ -48,6 +48,6 @@ Color RingPattern::patternAt(const Point &point) const {
 CheckersPattern::CheckersPattern(Color a, Color b) : m_a(a), m_b(b) {}
 
 Color CheckersPattern::patternAt(const Point &point) const {
-    int sum = std::abs(point.x) + std::abs(point.y) + std::abs(point.z);
+    int sum = std::floor(point.x) + std::floor(point.y) + std::floor(point.z);
     return (sum % 2 == 0 ? m_a : m_b);
 }

@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     Sphere s;
     s.material.color = Color(1, 0.2, 1);
 
-    auto lightPosition = Point(-10, 10, -10);
+    auto lightPosition = Point(-3, 3, -3);
     auto lightColor = Color(1, 1, 1);
     auto light = PointLight(lightPosition, lightColor);
 
@@ -32,33 +32,20 @@ int main(int argc, char **argv) {
     floor.transform = Matrix<double>::scalingMatrix(10, 0.01, 10);
     floor.material.color = Color(1, 0.9, 0.9);
     floor.material.specular = 0;
+    floor.material.reflective = 0.2;
 
-    Sphere leftWall;
-    leftWall.transform = Matrix<double>::translationMatrix(0, 0, 5) *
-                         Matrix<double>::rotationMatrixY(-PI / 4) *
-                         Matrix<double>::rotationMatrixX(PI / 2) *
-                         Matrix<double>::scalingMatrix(10, 0.01, 10);
-    leftWall.material = floor.material;
-
-    Sphere rightWall;
-    rightWall.transform = Matrix<double>::translationMatrix(0, 0, 5) *
-                          Matrix<double>::rotationMatrixY(PI / 4) *
-                          Matrix<double>::rotationMatrixX(PI / 2) *
-                          Matrix<double>::scalingMatrix(10, 0.01, 10);
-    rightWall.material = floor.material;
-
-    Sphere middle;
+    Sphere middle = Sphere::glassSphere();
     middle.transform = Matrix<double>::translationMatrix(-0.5, 1, 0.5);
-    middle.material = Material();
-    middle.material.color = Color(0.1, 1, 0.5);
-    middle.material.diffuse = 0.7;
-    middle.material.specular = 0.3;
-    middle.material.pattern = new StripePattern(Color(1, 0, 0), Color(0, 1, 0));
+    // middle.material = Material();
+    // middle.material.color = Color(0.1, 1, 0.5);
+    // middle.material.diffuse = 0.7;
+    // middle.material.specular = 0.3;
+    // middle.material.pattern = new StripePattern(Color(1, 0, 0), Color(0, 1,
+    // 0));
 
     Sphere right;
     right.transform = Matrix<double>::translationMatrix(1.5, 0.5, -0.5) *
                       Matrix<double>::scalingMatrix(0.5, 0.5, 0.5);
-    right.material = Material();
     right.material.color = Color(0.5, 1, 0.1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
@@ -67,29 +54,54 @@ int main(int argc, char **argv) {
     left.transform = Matrix<double>::translationMatrix(-1.5, 0.33, -0.75) *
                      Matrix<double>::scalingMatrix(0.33, 0.33, 0.33);
     left.material = Material();
-    left.material.color = Color(1, 0.8, 0.1);
+    left.material.color = Color::White;
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
     left.material.reflective = 1.0;
-    left.material.pattern = new RingPattern(Color::Lime, Color::Green);
 
     Plane plane;
     plane.material = floor.material;
-    plane.material.reflective = 0.9;
-    plane.material.pattern = new CheckersPattern(Color::Teal, Color::Red);
+    plane.material.reflective = 0.2;
+    plane.material.pattern =
+        new CheckersPattern(Color(0.2, 0.2, 0.2), Color::White);
+
+    const int cubeSize = 10;
+
+    Plane ceiling = plane;
+    ceiling.transform = Matrix<double>::translationMatrix(0, cubeSize, 0);
+
+    Plane rightWall = plane;
+    rightWall.transform = Matrix<double>::translationMatrix(cubeSize, 0, 0) *
+                          Matrix<double>::rotationMatrixZ(PI / 2);
+
+    Plane leftWall = plane;
+    leftWall.transform = Matrix<double>::translationMatrix(-cubeSize, 0, 0) *
+                         Matrix<double>::rotationMatrixZ(PI / 2);
+
+    Plane frontWall = plane;
+    frontWall.transform = Matrix<double>::translationMatrix(0, 0, cubeSize) *
+                          Matrix<double>::rotationMatrixX(PI / 2);
+
+    Plane backWall = plane;
+    backWall.transform = Matrix<double>::translationMatrix(0, 0, -cubeSize) *
+                         Matrix<double>::rotationMatrixX(PI / 2);
+
+    Sphere origin;
 
     World w;
     w.addObject(left);
     w.addObject(middle);
     w.addObject(right);
     w.addObject(plane);
-    // w.addObject(floor);
-    // w.addObject(leftWall);
-    // w.addObject(rightWall);
+    w.addObject(ceiling);
+    w.addObject(leftWall);
+    w.addObject(rightWall);
+    w.addObject(frontWall);
+    w.addObject(backWall);
     w.addLight(light);
 
     Camera c;
-    c.transform = Matrix<double>::viewTransform(Point(0, 1, -5), Point(0, 1, 0),
+    c.transform = Matrix<double>::viewTransform(Point(0, 1, -4), Point(0, 1, 0),
                                                 Vector(0, 1, 0));
 
     c.render(w).write();

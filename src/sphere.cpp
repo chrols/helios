@@ -28,3 +28,11 @@ std::vector<Intersection> Sphere::localIntersect(const Ray &r) const {
 Optional<Vector> Sphere::localNormal(const Point &p) const {
     return (p - Point(0, 0, 0));
 }
+
+Sphere Sphere::glassSphere() {
+    Sphere s;
+    s.material.color = Color::Black;
+    s.material.transparency = 1.0;
+    s.material.refraction = 1.5;
+    return s;
+}

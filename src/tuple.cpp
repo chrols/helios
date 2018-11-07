@@ -197,7 +197,17 @@ std::ostream &operator<<(std::ostream &os, const Tuple &p) {
     return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const Point &p) {
+    os << "Point(" << p.x << ", " << p.y << ", " << p.z << ")";
+    return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const Color &p) {
-    os << "(" << p.r << ", " << p.g << ", " << p.b << ")";
+    os << "Color(" << p.r << ", " << p.g << ", " << p.b << ")";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Vector &p) {
+    os << "Vector(" << p.x << ", " << p.y << ", " << p.z << ")";
     return os;
 }

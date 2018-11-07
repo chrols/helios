@@ -16,13 +16,19 @@ public:
                   unsigned remaining = DEFAULT_RECUR_LIMIT) const;
     Color reflectedColor(const Intersection &hit,
                          unsigned remaining = DEFAULT_RECUR_LIMIT) const;
+    Color refractedColor(const Intersection &hit,
+                         unsigned remaining = DEFAULT_RECUR_LIMIT) const;
     bool isShadowed(const Point &point) const;
+
+    void clearObjects();
+
+    const Object *firstObject() const;
 
     static World testWorld();
 
     static constexpr unsigned DEFAULT_RECUR_LIMIT = 5;
 
-private:
+public: // FIXME Rewrite test?
     Color _shadeHit(const Intersection &hit,
                     unsigned remaining = DEFAULT_RECUR_LIMIT) const;
 

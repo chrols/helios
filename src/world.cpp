@@ -23,6 +23,7 @@ void World::addLight(const PointLight &light) {
 }
 
 void World::addObject(const Object &object) {
+    // FIXME
     m_object.push_back(&object);
 }
 
@@ -34,7 +35,7 @@ Color World::colorAt(const Ray &ray, unsigned remaining) const {
 
     for (auto &e : xs) {
         if (e.t >= 0) {
-            e.precompute(ray);
+            e.precompute(ray, xs);
             return _shadeHit(e, remaining);
         }
     }
@@ -57,6 +58,34 @@ Color World::reflectedColor(const Intersection &hit, unsigned remaining) const {
     return color * hit.object->material.reflective;
 }
 
+Color World::refractedColor(const Intersection &hit, unsigned remaining) const {
+    if (remaining == 0)
+        return Color::Black;
+
+    // if (!hit.object)
+    //     return Color::Black;
+
+    if (hit.object->material.transparency == 0)
+        return Color::Black;
+
+    double nRatio = hit.n1 / hit.n2;
+    double cosI = hit.eyeVector.dot(hit.normalVector);
+    double sin2t = nRatio * nRatio * (1 - cosI * cosI);
+
+    if (sin2t > 1.0)
+        return Color::Black;
+
+    double cosT = std::sqrt(1.0 - sin2t);
+
+    auto direction =
+        hit.normalVector * (nRatio * cosI - cosT) - hit.eyeVector * nRatio;
+
+    Ray refractRay(hit.underPoint, direction);
+
+    return colorAt(refractRay, remaining - 1) *
+           hit.object->material.transparency;
+}
+
 bool World::isShadowed(const Point &point) const {
     if (m_light.size() < 1)
         return false;
@@ -72,21 +101,29 @@ bool World::isShadowed(const Point &point) const {
     return (hit && hit->t < distance);
 }
 
+void World::clearObjects() {
+    m_object.clear();
+}
+
+const Object *World::firstObject() const {
+    return m_object[0];
+}
+
 World World::testWorld() {
     PointLight light(Point(-10, 10, -10), Color(1, 1, 1));
 
-    Sphere s1;
-    s1.material.color = Color(0.8, 1.0, 0.6);
-    s1.material.diffuse = 0.7;
-    s1.material.specular = 0.2;
+    Sphere *s1 = new Sphere();
+    s1->material.color = Color(0.8, 1.0, 0.6);
+    s1->material.diffuse = 0.7;
+    s1->material.specular = 0.2;
 
-    Sphere s2;
-    s2.transform = Matrix<double>::scalingMatrix(0.5, 0.5, 0.5);
+    Sphere *s2 = new Sphere();
+    s2->transform = Matrix<double>::scalingMatrix(0.5, 0.5, 0.5);
 
     World w;
     w.addLight(light);
-    w.addObject(s1);
-    w.addObject(s2);
+    w.addObject(*s1);
+    w.addObject(*s2);
 
     return w;
 }
@@ -98,5 +135,7 @@ Color World::_shadeHit(const Intersection &hit, unsigned remaining) const {
 
     auto reflected = reflectedColor(hit, remaining);
 
-    return (surface + reflected);
+    auto refracted = refractedColor(hit, remaining);
+
+    return (surface + reflected + refracted);
 }

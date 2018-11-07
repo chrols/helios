@@ -91,3 +91,9 @@ TEST(Materials, LightingWithPatternApplied) {
     ASSERT_TRUE(c1 == Color(1, 1, 1));
     ASSERT_TRUE(c2 == Color(0, 0, 0));
 }
+
+TEST(Materials, TrasparencyAndRefractionForDefaultMaterial) {
+    Material m;
+    ASSERT_EQ(m.transparency, 0.0);
+    ASSERT_EQ(m.refraction, 1.0);
+}
