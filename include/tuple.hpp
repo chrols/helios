@@ -70,8 +70,10 @@ public:
 
     Color operator-(const Color &rhs) const;
     Color operator*(double scalar) const;
+    Color operator/(double scalar) const;
     Color operator*(const Color &rhs) const;
     Color operator+(const Color &rhs) const;
+    Color &operator+=(const Color &rhs);
     bool operator==(const Color &rhs) const;
     double r, g, b;
 };

@@ -9,7 +9,7 @@ public:
     Camera();
 
     Canvas render(const World &world) const;
-    Ray rayForPixel(unsigned x, unsigned y) const;
+    Ray rayForPixel(double x, double y) const;
 
     void calculatePixelSize();
 

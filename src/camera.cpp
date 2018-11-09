@@ -9,12 +9,24 @@ Camera::Camera()
 }
 
 Canvas Camera::render(const World &world) const {
+    int aaLevel = 1;
+
     Canvas image(width, height);
 #pragma omp parallel for schedule(dynamic)
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            auto ray = rayForPixel(x, y);
-            auto color = world.colorAt(ray);
+
+            double step = 1.0 / (1 + aaLevel);
+            Color color = Color::Black;
+
+            for (int ay = 1; ay <= aaLevel; ay++) {
+                for (int ax = 1; ax <= aaLevel; ax++) {
+                    auto ray = rayForPixel(x + step * ax, y + step * ay);
+                    color += world.colorAt(ray);
+                }
+            }
+
+            color = color / (aaLevel * aaLevel);
             image.setPixel(x, y, color);
         }
     }
@@ -22,9 +34,9 @@ Canvas Camera::render(const World &world) const {
     return image;
 }
 
-Ray Camera::rayForPixel(unsigned x, unsigned y) const {
-    auto xoffset = (x + 0.5) * pixelSize;
-    auto yoffset = (y + 0.5) * pixelSize;
+Ray Camera::rayForPixel(double x, double y) const {
+    auto xoffset = x * pixelSize;
+    auto yoffset = y * pixelSize;
 
     auto worldX = halfWidth - xoffset;
     auto worldY = halfWidth - yoffset;

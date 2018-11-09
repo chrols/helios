@@ -180,6 +180,10 @@ Color Color::operator*(double scalar) const {
     return Color(r * scalar, g * scalar, b * scalar);
 }
 
+Color Color::operator/(double scalar) const {
+    return Color(r / scalar, g / scalar, b / scalar);
+}
+
 Color Color::operator*(const Color &rhs) const {
     return Color(r * rhs.r, g * rhs.g, b * rhs.b);
 }
@@ -187,6 +191,14 @@ Color Color::operator*(const Color &rhs) const {
 Color Color::operator+(const Color &rhs) const {
     return Color(r + rhs.r, g + rhs.g, b + rhs.b);
 }
+
+Color &Color::operator+=(const Color &rhs) {
+    r += rhs.r;
+    g += rhs.g;
+    b += rhs.b;
+    return *this;
+}
+
 bool Color::operator==(const Color &rhs) const {
     return (almostEqual(r, rhs.r) && almostEqual(g, rhs.g) &&
             almostEqual(b, rhs.b));
