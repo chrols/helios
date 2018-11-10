@@ -137,5 +137,13 @@ Color World::_shadeHit(const Intersection &hit, unsigned remaining) const {
 
     auto refracted = refractedColor(hit, remaining);
 
-    return (surface + reflected + refracted);
+    auto material = hit.object->material;
+
+    if (material.reflective > 0 && material.transparency > 0) {
+        double reflectance = hit.reflectance();
+        return (surface + reflected * reflectance +
+                refracted * (1 - reflectance));
+    } else {
+        return (surface + reflected + refracted);
+    }
 }

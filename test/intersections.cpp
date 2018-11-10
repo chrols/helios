@@ -112,3 +112,32 @@ TEST(Intersections, TheUnderPointIsOffsetBelowSurface) {
     ASSERT_GT(hit.underPoint.z, -1);
     ASSERT_LT(hit.underPoint.z, -0.9);
 }
+
+TEST(Intersections, SchlickApproximationUnderTotalInternalReflection) {
+    auto sphere = Sphere::glassSphere();
+    Ray ray(Point(0, 0, std::sqrt(2) / 2), Vector(0, 1, 0));
+    std::vector<Intersection> xs = {Intersection(-std::sqrt(2) / 2, &sphere),
+                                    Intersection(std::sqrt(2) / 2, &sphere)};
+    xs[1].precompute(ray, xs);
+    auto reflectance = xs[1].reflectance();
+    ASSERT_EQ(reflectance, 1);
+}
+
+TEST(Intersections, SchlickApproximationWithPerpendicularViewingAngle) {
+    auto sphere = Sphere::glassSphere();
+    Ray ray(Point(0, 0, 0), Vector(0, 1, 0));
+    std::vector<Intersection> xs = {Intersection(-1, &sphere),
+                                    Intersection(1, &sphere)};
+    xs[1].precompute(ray, xs);
+    auto reflectance = xs[1].reflectance();
+    ASSERT_TRUE(almostEqual(reflectance, 0.04));
+}
+
+TEST(Intersections, SchlickApproximationWithSmallAngleAndN2GtN1) {
+    auto sphere = Sphere::glassSphere();
+    Ray ray(Point(0, 0.99, -2), Vector(0, 0, 1));
+    std::vector<Intersection> xs = {Intersection(1.8589, &sphere)};
+    xs[0].precompute(ray, xs);
+    auto reflectance = xs[0].reflectance();
+    ASSERT_TRUE(almostEqual(reflectance, 0.48873));
+}

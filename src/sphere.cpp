@@ -33,6 +33,7 @@ Sphere Sphere::glassSphere() {
     Sphere s;
     s.material.color = Color::Black;
     s.material.transparency = 1.0;
+    s.material.reflective = 1.0;
     s.material.refraction = 1.5;
     return s;
 }

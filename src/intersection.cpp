@@ -50,6 +50,24 @@ void Intersection::precompute(const Ray &ray,
     }
 }
 
+double Intersection::reflectance() const {
+    // Schlick
+
+    auto cos = eyeVector.dot(normalVector);
+
+    if (n1 > n2) {
+        auto n = n1 / n2;
+        auto sin2t = n * n * (1.0 - cos * cos);
+        if (sin2t > 1.0)
+            return 1.0;
+        cos = std::sqrt(1.0 - sin2t);
+    }
+
+    auto r0 = (n1 - n2) / (n1 + n2);
+    r0 *= r0;
+    return r0 + (1 - r0) * std::pow((1 - cos), 5.0);
+}
+
 Intersection &Intersection::operator=(const Intersection &rhs) {
     t = rhs.t;
     object = rhs.object;

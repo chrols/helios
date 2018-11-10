@@ -15,7 +15,8 @@ public:
 
     void precompute(const Ray &ray, const std::vector<Intersection> &xs =
                                         std::vector<Intersection>());
-    Color reflectedColor(const World &world) const;
+
+    double reflectance() const;
 
     Intersection &operator=(const Intersection &rhs);
     bool operator==(const Intersection &rhs) const;
