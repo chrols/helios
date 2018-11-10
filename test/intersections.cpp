@@ -72,15 +72,15 @@ TEST(Intersections, PrecomputingReflectionVector) {
 
 TEST(Intersections, NsAtVariousIntersections) {
     auto a = Sphere::glassSphere();
-    a.transform = Matrix<double>::scalingMatrix(2, 2, 2);
+    a.transform = Matrix::scalingMatrix(2, 2, 2);
     a.material.refraction = 1.5;
 
     auto b = Sphere::glassSphere();
-    b.transform = Matrix<double>::translationMatrix(0, 0, -0.25);
+    b.transform = Matrix::translationMatrix(0, 0, -0.25);
     b.material.refraction = 2.0;
 
     auto c = Sphere::glassSphere();
-    c.transform = Matrix<double>::translationMatrix(0, 0, 0.25);
+    c.transform = Matrix::translationMatrix(0, 0, 0.25);
     c.material.refraction = 2.5;
 
     Ray ray(Point(0, 0, -4), Vector(0, 0, 1));

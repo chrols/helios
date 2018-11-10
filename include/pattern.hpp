@@ -12,7 +12,7 @@ public:
     Pattern();
     virtual Color patternAt(const Point &point) const = 0;
     Color patternAtObject(const Point &point, const Object &object) const;
-    Matrix<double> transform;
+    Matrix transform;
 };
 
 class TestPattern : public Pattern {

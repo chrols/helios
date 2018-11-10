@@ -12,7 +12,7 @@ public:
         return origin + direction * t;
     }
 
-    Ray transform(Matrix<double> tm) const {
+    Ray transform(Matrix tm) const {
         return Ray(tm * origin, tm * direction);
     }
 

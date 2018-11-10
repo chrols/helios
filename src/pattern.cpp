@@ -2,7 +2,7 @@
 
 #include "object.hpp"
 
-Pattern::Pattern() : transform(Matrix<double>::identity(4)) {}
+Pattern::Pattern() : transform(Matrix::identity(4)) {}
 
 Color Pattern::patternAtObject(const Point &point, const Object &object) const {
     auto objectPoint = object.transform.inverse() * point;

@@ -4,7 +4,7 @@
 
 Camera::Camera()
     : width(256), height(144), fov(PI / 3.0),
-      transform(Matrix<double>::identity(4)) {
+      transform(Matrix::identity(4)) {
     calculatePixelSize();
 }
 

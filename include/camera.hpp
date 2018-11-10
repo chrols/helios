@@ -19,5 +19,5 @@ public:
     double halfHeight;
     double fov;
     double pixelSize;
-    Matrix<double> transform;
+    Matrix transform;
 };

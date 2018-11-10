@@ -17,20 +17,17 @@ TEST(Spheres, RayIntersectsSphereAtTwoPoints) {
 
 TEST(Spheres, SphereDefaultTransformation) {
     Sphere s;
-    ASSERT_EQ(s.transform, Matrix<double>::identity(4));
+    ASSERT_EQ(s.transform, Matrix::identity(4));
 }
 
 TEST(Spheres, ChangeSphereTransformation) {
     Sphere s;
-    auto t = Matrix<double>::translationMatrix(2, 3, 4);
-    s.setTransform(t);
-    s.transform = t;
 }
 
 TEST(Spheres, IntersectingScaledSphereWithRay) {
     Ray r(Point(0, 0, -5), Vector(0, 0, 1));
     Sphere s;
-    s.setTransform(Matrix<double>::scalingMatrix(2, 2, 2));
+    s.scale(2, 2, 2);
     auto xs = s.intersect(r);
     ASSERT_EQ(xs.size(), 2);
     ASSERT_EQ(xs[0].t, 3);
@@ -40,7 +37,7 @@ TEST(Spheres, IntersectingScaledSphereWithRay) {
 TEST(Spheres, IntersectingTranslatedSphereWithRay) {
     Ray r(Point(0, 0, -5), Vector(0, 0, 1));
     Sphere s;
-    s.setTransform(Matrix<double>::scalingMatrix(5, 0, 0));
+    s.scale(5, 0, 0);
     auto xs = s.intersect(r);
     ASSERT_EQ(xs.size(), 0);
 }
@@ -80,14 +77,14 @@ TEST(Spheres, NormalIsNormalized) {
 
 TEST(Spheres, NormalOnTranslatedSphere) {
     Sphere s;
-    s.setTransform(Matrix<double>::translationMatrix(0, 1, 0));
+    s.move(0, 1, 0);
     auto n = s.normal(Point(0, 1.70711, -0.70711));
     ASSERT_TRUE(*n == Vector(0, 0.70711, -0.70711));
 }
 
 TEST(Spheres, NormalOnScaledSphere) {
     Sphere s;
-    s.setTransform(Matrix<double>::scalingMatrix(1, 0.5, 1));
+    s.scale(1, 0.5, 1);
     auto n = s.normal(Point(0, std::sqrt(2) / 2, -std::sqrt(2) / 2));
     ASSERT_TRUE(*n == Vector(0, 0.970143, -.24254));
 }

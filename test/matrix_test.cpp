@@ -79,7 +79,7 @@ TEST(Point, MainStuff) {
 //     std::cout << "]\n";
 // }
 
-// auto transform = Matrix<double>::translationMatrix(5, -3, 2);
+// auto transform = Matrix::translationMatrix(5, -3, 2);
 
 // Point p(-3, 4, 5);
 // Point r(2, 1, 7);

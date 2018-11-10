@@ -11,7 +11,7 @@ TEST(Rays, ComputingPointFromDistance) {
 
 TEST(Rays, TranslatingRay) {
     Ray r(Point(1, 2, 3), Vector(0, 1, 0));
-    auto m = Matrix<double>::translationMatrix(3, 4, 5);
+    auto m = Matrix::translationMatrix(3, 4, 5);
     auto r2 = r.transform(m);
     ASSERT_TRUE(r2.origin == Point(4, 6, 8));
     ASSERT_TRUE(r2.direction == Vector(0, 1, 0));
@@ -19,7 +19,7 @@ TEST(Rays, TranslatingRay) {
 
 TEST(Rays, ScalingRay) {
     Ray r(Point(1, 2, 3), Vector(0, 1, 0));
-    auto m = Matrix<double>::scalingMatrix(2, 3, 4);
+    auto m = Matrix::scalingMatrix(2, 3, 4);
     auto r2 = r.transform(m);
     ASSERT_TRUE(r2.origin == Point(2, 6, 12));
     ASSERT_TRUE(r2.direction == Vector(0, 3, 0));

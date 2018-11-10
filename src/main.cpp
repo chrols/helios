@@ -29,13 +29,13 @@ int main(int argc, char **argv) {
     auto light = PointLight(lightPosition, lightColor);
 
     Sphere floor;
-    floor.transform = Matrix<double>::scalingMatrix(10, 0.01, 10);
+    floor.transform = Matrix::scalingMatrix(10, 0.01, 10);
     floor.material.color = Color(1, 0.9, 0.9);
     floor.material.specular = 0;
     floor.material.reflective = 0.2;
 
     Sphere middle = Sphere::glassSphere();
-    middle.transform = Matrix<double>::translationMatrix(-0.5, 1, 0.5);
+    middle.transform = Matrix::translationMatrix(-0.5, 1, 0.5);
     // middle.material = Material();
     // middle.material.color = Color(0.1, 1, 0.5);
     // middle.material.diffuse = 0.7;
@@ -44,15 +44,15 @@ int main(int argc, char **argv) {
     // 0));
 
     Sphere right;
-    right.transform = Matrix<double>::translationMatrix(1.5, 0.5, -0.5) *
-                      Matrix<double>::scalingMatrix(0.5, 0.5, 0.5);
+    right.transform = Matrix::translationMatrix(1.5, 0.5, -0.5) *
+                      Matrix::scalingMatrix(0.5, 0.5, 0.5);
     right.material.color = Color(0.5, 1, 0.1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
 
     Sphere left;
-    left.transform = Matrix<double>::translationMatrix(-1.5, 0.33, -0.75) *
-                     Matrix<double>::scalingMatrix(0.33, 0.33, 0.33);
+    left.transform = Matrix::translationMatrix(-1.5, 0.33, -0.75) *
+                     Matrix::scalingMatrix(0.33, 0.33, 0.33);
     left.material = Material();
     left.material.color = Color::White;
     left.material.diffuse = 0.7;
@@ -68,23 +68,23 @@ int main(int argc, char **argv) {
     const int cubeSize = 10;
 
     Plane ceiling = plane;
-    ceiling.transform = Matrix<double>::translationMatrix(0, cubeSize, 0);
+    ceiling.transform = Matrix::translationMatrix(0, cubeSize, 0);
 
     Plane rightWall = plane;
-    rightWall.transform = Matrix<double>::translationMatrix(cubeSize, 0, 0) *
-                          Matrix<double>::rotationMatrixZ(PI / 2);
+    rightWall.transform = Matrix::translationMatrix(cubeSize, 0, 0) *
+                          Matrix::rotationMatrixZ(PI / 2);
 
     Plane leftWall = plane;
-    leftWall.transform = Matrix<double>::translationMatrix(-cubeSize, 0, 0) *
-                         Matrix<double>::rotationMatrixZ(PI / 2);
+    leftWall.transform = Matrix::translationMatrix(-cubeSize, 0, 0) *
+                         Matrix::rotationMatrixZ(PI / 2);
 
     Plane frontWall = plane;
-    frontWall.transform = Matrix<double>::translationMatrix(0, 0, cubeSize) *
-                          Matrix<double>::rotationMatrixX(PI / 2);
+    frontWall.transform = Matrix::translationMatrix(0, 0, cubeSize) *
+                          Matrix::rotationMatrixX(PI / 2);
 
     Plane backWall = plane;
-    backWall.transform = Matrix<double>::translationMatrix(0, 0, -cubeSize) *
-                         Matrix<double>::rotationMatrixX(PI / 2);
+    backWall.transform = Matrix::translationMatrix(0, 0, -cubeSize) *
+                         Matrix::rotationMatrixX(PI / 2);
 
     Sphere origin;
 
@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
     w.addLight(light);
 
     Camera c;
-    c.transform = Matrix<double>::viewTransform(Point(0, 1, -4), Point(0, 1, 0),
+    c.transform = Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0),
                                                 Vector(0, 1, 0));
 
     c.render(w).write();

@@ -9,40 +9,23 @@
 
 class Object {
 public:
-    Object() : transform(Matrix<double>::identity(4)) {}
-
-    void setTransform(const Matrix<double> &transform) {
-        this->transform = transform;
-    }
+    Object() : transform(Matrix::identity(4)) {}
 
     virtual std::vector<Intersection> localIntersect(const Ray &r) const = 0;
     virtual Optional<Vector> localNormal(const Point &p) const = 0;
 
-    std::vector<Intersection> intersect(const Ray &r) const {
-        if (!transform.hasInverse())
-            return {};
+    std::vector<Intersection> intersect(const Ray &r) const;
+    Optional<Vector> normal(const Point &p) const;
 
-        auto localRay = r.transform(transform.inverse());
-        return localIntersect(localRay);
-    }
+    void move(const Vector &v);
+    void move(double x, double y, double z);
 
-    Optional<Vector> normal(const Point &p) const {
-        if (!transform.hasInverse()) {
-            std::cerr << "No INVERSE!" << std::endl;
-            return {};
-        }
+    void scale(double w, double h, double d);
 
-        auto inverse = transform.inverse();
-        auto localPoint = inverse * p;
-        auto potentialLocalNormal = localNormal(localPoint);
-        if (!potentialLocalNormal) {
-            std::cerr << "No potential!" << std::endl;
-            return {};
-        }
-        auto worldNormal = inverse.transpose() * (*potentialLocalNormal);
-        return worldNormal.normalize();
-    }
+    void rotateX(double rad);
+    void rotateY(double rad);
+    void rotateZ(double rad);
 
-    Matrix<double> transform;
+    Matrix transform;
     Material material;
 };
