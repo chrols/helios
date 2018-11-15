@@ -1,21 +1,21 @@
-#include <gtest/gtest.h>
+#include "catch.hpp"
 
 #include "pattern.hpp"
 #include "plane.hpp"
 #include "world.hpp"
 
-TEST(DISABLED_World, IntersectWorldWithRay) {
+TEST_CASE("IntersectWorldWithRay", "[World]", ) {
     World world = World::testWorld();
     Ray ray(Point(0, 0, -5), Vector(0, 0, 1));
     auto xs = world.intersect(ray);
-    ASSERT_EQ(xs.size(), 4);
-    ASSERT_EQ(xs[0].t, 4);
-    ASSERT_EQ(xs[1].t, 4.5);
-    ASSERT_EQ(xs[2].t, 5.5);
-    ASSERT_EQ(xs[3].t, 6);
+    REQUIRE(xs.size() == 4);
+    REQUIRE(xs[0].t == 4);
+    REQUIRE(xs[1].t == 4.5);
+    REQUIRE(xs[2].t == 5.5);
+    REQUIRE(xs[3].t == 6);
 }
 
-TEST(World, ReflectedColorForNonReflectiveMaterial) {
+TEST_CASE("ReflectedColorForNonReflectiveMaterial", "[World]") {
     World world;
     Ray ray(Point(0, 0, 0), Vector(0, 0, 1));
     Sphere sphere;
@@ -23,23 +23,23 @@ TEST(World, ReflectedColorForNonReflectiveMaterial) {
     Intersection hit(1, &sphere);
     hit.precompute(ray);
     auto color = world.reflectedColor(hit);
-    ASSERT_EQ(color, Color::Black);
+    REQUIRE(color == Color::Black);
 }
 
-TEST(World, RefractedColorWithOpaqueSurface) {
+TEST_CASE("RefractedColorWithOpaqueSurface", "[World]") {
     World world = World::testWorld();
     const Object *object = world.firstObject();
     Ray ray(Point(0, 0, -5), Vector(0, 0, 1));
     std::vector<Intersection> xs;
     xs.emplace_back(Intersection(4, object));
     xs.emplace_back(Intersection(6, object));
-    ASSERT_FALSE(xs.empty());
+    REQUIRE(!xs.empty());
     xs[0].precompute(ray, xs);
     Color c = world.refractedColor(xs[0], 5);
-    ASSERT_EQ(c, Color::Black);
+    REQUIRE(c == Color::Black);
 }
 
-TEST(World, RefractedColorAtMaximumRecursiveDepth) {
+TEST_CASE("RefractedColorAtMaximumRecursiveDepth", "[World]") {
     World world;
     Sphere sphere;
     sphere.material.transparency = 1.0;
@@ -52,10 +52,10 @@ TEST(World, RefractedColorAtMaximumRecursiveDepth) {
     xs.emplace_back(Intersection(6, &sphere));
     xs[0].precompute(ray, xs);
     auto c = world.refractedColor(xs[0], 0);
-    ASSERT_EQ(c, Color::Black);
+    REQUIRE(c == Color::Black);
 }
 
-TEST(World, RefractedColorUnderTotalInternalReflection) {
+TEST_CASE("RefractedColorUnderTotalInternalReflection", "[World]") {
     World world;
     Sphere sphere;
     sphere.material.transparency = 1.0;
@@ -68,10 +68,10 @@ TEST(World, RefractedColorUnderTotalInternalReflection) {
     xs.emplace_back(Intersection(std::sqrt(2.0) / 2.0, &sphere));
     xs[1].precompute(ray, xs);
     auto c = world.refractedColor(xs[1], 5);
-    ASSERT_EQ(c, Color::Black);
+    REQUIRE(c == Color::Black);
 }
 
-TEST(World, RefractedColorWithRefractedRay) {
+TEST_CASE("RefractedColorWithRefractedRay", "[World]") {
     World world = World::testWorld();
     world.clearObjects();
 
@@ -94,10 +94,10 @@ TEST(World, RefractedColorWithRefractedRay) {
 
     xs[2].precompute(ray, xs);
     auto c = world.refractedColor(xs[2], 5);
-    ASSERT_EQ(c, Color(0, 0.99878, 0.04724));
+    REQUIRE(c == Color(0, 0.99878, 0.04724));
 }
 
-TEST(World, ShadeHitWithTransparentMaterial) {
+TEST_CASE("ShadeHitWithTransparentMaterial", "[World]") {
     World world = World::testWorld();
 
     Plane floor;
@@ -119,10 +119,10 @@ TEST(World, ShadeHitWithTransparentMaterial) {
     xs.emplace_back(Intersection(std::sqrt(2.0), &floor));
     xs[0].precompute(ray, xs);
     Color color = world._shadeHit(xs[0]);
-    ASSERT_EQ(color, Color(0.93642, 0.68642, 0.68642));
+    REQUIRE(color == Color(0.93642, 0.68642, 0.68642));
 }
 
-TEST(World, ShadeHitReflectiveTransparentMaterial) {
+TEST_CASE("ShadeHitReflectiveTransparentMaterial", "[World]") {
     World world = World::testWorld();
     Ray ray(Point(0, 0, -3), Vector(0, -std::sqrt(2) / 2, std::sqrt(2) / 2));
 
@@ -144,5 +144,5 @@ TEST(World, ShadeHitReflectiveTransparentMaterial) {
 
     auto color = world._shadeHit(xs[0]);
 
-    ASSERT_EQ(color, Color(0.93391, 0.69643, 0.69243));
+    REQUIRE(color == Color(0.93391, 0.69643, 0.69243));
 }

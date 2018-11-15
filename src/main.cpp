@@ -14,11 +14,6 @@
 #include <gtest/gtest.h>
 
 int main(int argc, char **argv) {
-    if (argc >= 2 && strcmp(argv[1], "-test") == 0) {
-        ::testing::InitGoogleTest(&argc, argv);
-        return RUN_ALL_TESTS();
-    }
-
     const unsigned pixels = 1000;
 
     Sphere s;

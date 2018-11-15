@@ -11,15 +11,19 @@ include_directories(include)
 FILE(GLOB SOURCE_FILES src/*.cpp)
 FILE(GLOB TEST_FILES test/*.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${TEST_FILES})
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/lib/libgtest.a)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-set(UNIT_TEST ${PROJECT_NAME})
+list(FILTER SOURCE_FILES EXCLUDE REGEX "main.cpp$")
+
+add_definitions(-DUNITTEST)
+add_executable(${PROJECT_NAME}-test ${SOURCE_FILES} ${TEST_FILES})
+
+set(UNIT_TEST ${PROJECT_NAME}-test)
 add_custom_command(
      TARGET ${UNIT_TEST}
      COMMENT "Run tests"
      POST_BUILD 
-     COMMAND ${PROJECT_NAME} -test
+     COMMAND ${PROJECT_NAME}-test --use-colour no
 )
 
 find_package( OpenMP )

@@ -1,12 +1,12 @@
-#include <gtest/gtest.h>
+#include "catch.hpp"
 
 #include "light.hpp"
 #include "tuple.hpp"
 
-TEST(Lights, PointLightHasPositionAndIntensity) {
+TEST_CASE("PointLightHasPositionAndIntensity", "[Lights]") {
     auto intensity = Color(1, 1, 1);
     auto position = Point(0, 0, 0);
     auto light = PointLight(position, intensity);
-    ASSERT_TRUE(light.position == position);
-    ASSERT_TRUE(light.intensity == intensity);
+    REQUIRE(light.position == position);
+    REQUIRE(light.intensity == intensity);
 }
