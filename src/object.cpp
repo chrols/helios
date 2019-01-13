@@ -1,11 +1,16 @@
 #include "object.hpp"
 
 std::vector<Intersection> Object::intersect(const Ray &r) const {
-    if (!transform.hasInverse())
+    if (inverse) {
+        auto localRay = r.transform(*inverse);
+        return localIntersect(localRay);
+    } else if (!transform.hasInverse()) {
         return {};
-
-    auto localRay = r.transform(transform.inverse());
-    return localIntersect(localRay);
+    } else {
+        inverse = std::experimental::make_optional(transform.inverse());
+        auto localRay = r.transform(*inverse);
+        return localIntersect(localRay);
+    }
 }
 
 Optional<Vector> Object::normal(const Point &p) const {

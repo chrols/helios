@@ -27,5 +27,6 @@ public:
     void rotateZ(double rad);
 
     Matrix transform;
+    mutable Optional<Matrix> inverse;
     Material material;
 };
