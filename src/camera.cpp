@@ -41,10 +41,12 @@ Ray Camera::rayForPixel(double x, double y) const {
     auto worldX = halfWidth - xoffset;
     auto worldY = halfWidth - yoffset;
 
-    if (!transform.hasInverse())
+    if (!(cacheInverse || transform.hasInverse()))
         return Ray(Point(0, 0, 0), Vector(1, 0, 0));
 
-    auto inverse = transform.inverse();
+    auto inverse = cacheInverse ? *cacheInverse : transform.inverse();
+    if (!cacheInverse)
+        cacheInverse = inverse;
     auto pixel = inverse * Point(worldX, worldY, -1);
     auto origin = inverse * Point(0, 0, 0);
     auto direction = (pixel - origin).normalize();

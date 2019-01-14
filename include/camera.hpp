@@ -20,4 +20,5 @@ public:
     double fov;
     double pixelSize;
     Matrix transform;
+    mutable Optional<Matrix> cacheInverse;
 };

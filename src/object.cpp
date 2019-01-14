@@ -1,25 +1,27 @@
 #include "object.hpp"
 
 std::vector<Intersection> Object::intersect(const Ray &r) const {
-    if (inverse) {
-        auto localRay = r.transform(*inverse);
+    if (cacheInverse) {
+        auto localRay = r.transform(*cacheInverse);
         return localIntersect(localRay);
     } else if (!transform.hasInverse()) {
         return {};
     } else {
-        inverse = std::experimental::make_optional(transform.inverse());
-        auto localRay = r.transform(*inverse);
+        cacheInverse = std::experimental::make_optional(transform.inverse());
+        auto localRay = r.transform(*cacheInverse);
         return localIntersect(localRay);
     }
 }
 
 Optional<Vector> Object::normal(const Point &p) const {
-    if (!transform.hasInverse()) {
+    if (!(cacheInverse || transform.hasInverse())) {
         std::cerr << "No INVERSE!" << std::endl;
         return {};
     }
 
-    auto inverse = transform.inverse();
+    auto inverse = cacheInverse ? *cacheInverse : transform.inverse();
+    if (!cacheInverse)
+        cacheInverse = inverse;
     auto localPoint = inverse * p;
     auto potentialLocalNormal = localNormal(localPoint);
     if (!potentialLocalNormal) {

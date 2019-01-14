@@ -27,6 +27,6 @@ public:
     void rotateZ(double rad);
 
     Matrix transform;
-    mutable Optional<Matrix> inverse;
+    mutable Optional<Matrix> cacheInverse;
     Material material;
 };
