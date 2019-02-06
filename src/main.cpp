@@ -5,16 +5,23 @@
 #include "intersection.hpp"
 #include "light.hpp"
 #include "matrix.hpp"
+#include "obj_file.hpp"
 #include "plane.hpp"
 #include "ray.hpp"
 #include "sphere.hpp"
+#include "triangle.hpp"
 #include "tuple.hpp"
 #include "world.hpp"
 
 #include <gtest/gtest.h>
 
+using namespace std;
+
 int main(int argc, char **argv) {
     const unsigned pixels = 1000;
+
+    ObjFile teapot;
+    teapot.readFile("teapot.obj");
 
     Sphere s;
     s.material.color = Color(1, 0.2, 1);
@@ -83,10 +90,24 @@ int main(int argc, char **argv) {
 
     Sphere origin;
 
+    // Triangle tri(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0));
+    Triangle tri(Point(1.36807, 2.43544, -0.227403),
+                 Point(1.38197, 2.4, -0.229712), Point(1.4, 2.4, 0));
+
     World w;
-    w.addObject(left);
-    w.addObject(middle);
-    w.addObject(right);
+    // w.addObject(left);
+    // w.addObject(middle);
+    // w.addObject(right);
+
+    std::vector<Triangle> triangles = teapot.triangles();
+
+    for (int i = 0; i < triangles.size(); i++) {
+        // Triangle e = triangles[i];
+        // std::cout << e.p1 << " " << e.p2 << " " << e.p3 << std::endl;
+        w.addObject(triangles[i]);
+    }
+
+    // w.addObject(tri);
     w.addObject(plane);
     w.addObject(ceiling);
     w.addObject(leftWall);
@@ -96,8 +117,8 @@ int main(int argc, char **argv) {
     w.addLight(light);
 
     Camera c;
-    c.transform = Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0),
-                                                Vector(0, 1, 0));
+    c.transform =
+        Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0), Vector(0, 1, 0));
 
     c.render(w).write();
 }
