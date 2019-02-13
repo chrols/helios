@@ -17,7 +17,7 @@ TEST_CASE("RayIntersectsSphereAtTwoPoints", "[Spheres]") {
 
 TEST_CASE("SphereDefaultTransformation", "[Spheres]") {
     Sphere s;
-    REQUIRE(s.transform == Matrix::identity(4));
+    REQUIRE(s.transform() == Matrix::identity(4));
 }
 
 TEST_CASE("ChangeSphereTransformation", "[Spheres]") {
@@ -37,7 +37,7 @@ TEST_CASE("IntersectingScaledSphereWithRay", "[Spheres]") {
 TEST_CASE("IntersectingTranslatedSphereWithRay", "[Spheres]") {
     Ray r(Point(0, 0, -5), Vector(0, 0, 1));
     Sphere s;
-    s.scale(5, 0, 0);
+    s.move(5, 0, 0);
     auto xs = s.intersect(r);
     REQUIRE(xs.size() == 0);
 }

@@ -5,7 +5,7 @@
 Pattern::Pattern() : transform(Matrix::identity(4)) {}
 
 Color Pattern::patternAtObject(const Point &point, const Object &object) const {
-    auto objectPoint = object.transform.inverse() * point;
+    auto objectPoint = object.transformInverse() * point;
     auto patternPoint = transform.inverse() * objectPoint;
     return patternAt(patternPoint);
 }

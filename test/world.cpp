@@ -101,7 +101,7 @@ TEST_CASE("ShadeHitWithTransparentMaterial", "[World]") {
     World world = World::testWorld();
 
     Plane floor;
-    floor.transform = Matrix::translationMatrix(0, -1, 0);
+    floor.setTransform(Matrix::translationMatrix(0, -1, 0));
     floor.material.transparency = 0.5;
     floor.material.refraction = 1.5;
     world.addObject(floor);
@@ -109,7 +109,7 @@ TEST_CASE("ShadeHitWithTransparentMaterial", "[World]") {
     Sphere ball;
     ball.material.color = Color::Red;
     ball.material.ambient = 0.5;
-    ball.transform = Matrix::translationMatrix(0, -3.5, -0.5);
+    ball.setTransform(Matrix::translationMatrix(0, -3.5, -0.5));
     world.addObject(ball);
 
     Ray ray(Point(0, 0, -3),
@@ -127,7 +127,7 @@ TEST_CASE("ShadeHitReflectiveTransparentMaterial", "[World]") {
     Ray ray(Point(0, 0, -3), Vector(0, -std::sqrt(2) / 2, std::sqrt(2) / 2));
 
     Plane floor;
-    floor.transform = Matrix::translationMatrix(0, -1, 0);
+    floor.setTransform(Matrix::translationMatrix(0, -1, 0));
     floor.material.reflective = 0.5;
     floor.material.transparency = 0.5;
     floor.material.refraction = 1.5;
@@ -136,7 +136,7 @@ TEST_CASE("ShadeHitReflectiveTransparentMaterial", "[World]") {
     Sphere ball;
     ball.material.color = Color(1, 0, 0);
     ball.material.ambient = 0.5;
-    ball.transform = Matrix::translationMatrix(0, -3.5, -0.5);
+    ball.setTransform(Matrix::translationMatrix(0, -3.5, -0.5));
     world.addObject(ball);
 
     std::vector<Intersection> xs = {Intersection(std::sqrt(2), &floor)};

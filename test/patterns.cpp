@@ -43,7 +43,7 @@ TEST_CASE("AssigningTransformation", "[Patterns]") {
 TEST_CASE("PatternWithObjectTransformation", "[Patterns]") {
     Sphere s;
     TestPattern pattern;
-    s.transform = Matrix::scalingMatrix(2, 2, 2);
+    s.setTransform(Matrix::scalingMatrix(2, 2, 2));
     auto c = pattern.patternAtObject(Point(2, 3, 4), s);
     REQUIRE(c == Color(1, 1.5, 2));
 }
@@ -59,7 +59,7 @@ TEST_CASE("PatternWithPatternTransformation", "[Patterns]") {
 TEST_CASE("PatternWithBothObjectAndPatternTransformation", "[Patterns]") {
     Sphere s;
     TestPattern pattern;
-    s.transform = Matrix::scalingMatrix(2, 2, 2);
+    s.setTransform(Matrix::scalingMatrix(2, 2, 2));
     pattern.transform = Matrix::translationMatrix(0.5, 1, 1.5);
     auto c = pattern.patternAtObject(Point(2.5, 3, 3.5), s);
     REQUIRE(c == Color(0.75, 0.5, 0.25));

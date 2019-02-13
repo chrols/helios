@@ -118,7 +118,7 @@ World World::testWorld() {
     s1->material.specular = 0.2;
 
     Sphere *s2 = new Sphere();
-    s2->transform = Matrix::scalingMatrix(0.5, 0.5, 0.5);
+    s2->setTransform(Matrix::scalingMatrix(0.5, 0.5, 0.5));
 
     World w;
     w.addLight(light);

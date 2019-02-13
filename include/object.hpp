@@ -5,11 +5,13 @@
 #include "material.hpp"
 #include "matrix.hpp"
 #include "ray.hpp"
+
+#include <memory>
 #include <vector>
 
 class Object {
 public:
-    Object() : transform(Matrix::identity(4)) {}
+    Object();
 
     virtual std::vector<Intersection> localIntersect(const Ray &r) const = 0;
     virtual Optional<Vector> localNormal(const Point &p) const = 0;
@@ -26,7 +28,15 @@ public:
     void rotateY(double rad);
     void rotateZ(double rad);
 
-    Matrix transform;
-    mutable Optional<Matrix> cacheInverse;
+    Matrix transform() const;
+    Matrix transformInverse() const;
+    void setTransform(const Matrix &transform);
+
     Material material;
+
+protected:
+    void _updateInverse();
+
+    Matrix m_transform;
+    std::shared_ptr<Matrix> m_inverse;
 };
