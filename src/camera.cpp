@@ -1,15 +1,22 @@
 #include "camera.hpp"
 
+#include <chrono>
 #include <cmath>
 
+using std::chrono::steady_clock;
+using std::chrono::duration_cast;
+using std::chrono::seconds;
+using std::chrono::microseconds;
+
 Camera::Camera()
-    : width(256), height(144), fov(PI / 3.0),
-      transform(Matrix::identity(4)) {
+    : width(256), height(144), fov(PI / 3.0), transform(Matrix::identity(4)) {
     calculatePixelSize();
 }
 
 Canvas Camera::render(const World &world) const {
     int aaLevel = 1;
+
+    steady_clock::time_point begin = steady_clock::now();
 
     Canvas image(width, height);
 #pragma omp parallel for schedule(dynamic)
@@ -30,6 +37,15 @@ Canvas Camera::render(const World &world) const {
             image.setPixel(x, y, color);
         }
     }
+
+    steady_clock::time_point end = steady_clock::now();
+
+    std::cerr << "Render took: " << duration_cast<seconds>(end - begin).count()
+              << " s" << std::endl;
+    std::cerr << "Per pixel: "
+              << duration_cast<microseconds>(end - begin).count() /
+                     double(width * height * 1000)
+              << " ms" << std::endl;
 
     return image;
 }
