@@ -35,8 +35,5 @@ public:
     Material material;
 
 protected:
-    void _updateInverse();
-
     Matrix m_transform;
-    std::shared_ptr<Matrix> m_inverse;
 };

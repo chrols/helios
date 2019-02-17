@@ -2,6 +2,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <memory>
+#include <mutex>
 #include <stdexcept>
 #include <vector>
 
@@ -11,8 +13,13 @@
 class Matrix {
 public:
     Matrix(unsigned width, unsigned height);
+    Matrix(const Matrix &matrix);
+    Matrix(Matrix &&rhs);
+    ~Matrix();
+
     // Brace initializer?
     // Type enforcement Matrix<double, 3> ??
+    Matrix &operator=(const Matrix &rhs);
     Point operator*(const Point &rhs) const;
     Vector operator*(const Vector &rhs) const;
     Matrix operator*(const Matrix &rhs) const;
@@ -44,4 +51,7 @@ public:
 private:
     unsigned m_width, m_height;
     std::vector<std::vector<double>> m_rows;
+
+    mutable std::shared_ptr<Matrix> m_inverse;
+    mutable std::mutex m_mutex;
 };

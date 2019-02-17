@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+
 Matrix::Matrix(unsigned width, unsigned height)
     : m_width(width), m_height(height) {
     m_rows.resize(m_height);
@@ -6,6 +7,28 @@ Matrix::Matrix(unsigned width, unsigned height)
     for (auto &row : m_rows) {
         row = std::vector<double>(m_width, 0);
     }
+}
+
+Matrix::Matrix(const Matrix &matrix)
+    : m_width(matrix.m_width), m_height(matrix.m_height), m_rows(matrix.m_rows),
+      m_inverse(matrix.m_inverse) {}
+
+Matrix::Matrix(Matrix &&other) {
+    m_width = other.m_width;
+    m_height = other.m_height;
+    m_rows = other.m_rows;
+    m_inverse = other.m_inverse;
+}
+
+Matrix::~Matrix() {}
+
+Matrix &Matrix::operator=(const Matrix &rhs) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    m_width = rhs.m_width;
+    m_height = rhs.m_height;
+    m_rows = rhs.m_rows;
+    m_inverse = rhs.m_inverse;
 }
 
 Point Matrix::operator*(const Point &rhs) const {
@@ -52,6 +75,8 @@ Matrix Matrix::operator*(const Matrix &rhs) const {
 }
 
 Matrix &Matrix::operator*=(const Matrix &rhs) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+
     for (int row = 0; row < m_height; row++) {
         for (int col = 0; col < m_width; col++) {
 
@@ -65,10 +90,14 @@ Matrix &Matrix::operator*=(const Matrix &rhs) {
         }
     }
 
+    m_inverse.reset();
+
     return *this;
 }
 
 std::vector<double> &Matrix::operator[](const int index) {
+    // std::lock_guard<std::mutex> lock(m_mutex);
+    m_inverse.reset();
     return m_rows[index];
 }
 
@@ -132,6 +161,12 @@ bool Matrix::hasInverse() const {
 }
 
 Matrix Matrix::inverse() const {
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    if (m_inverse) {
+        return *m_inverse;
+    }
+
     double det = determinant();
     if (det == 0)
         throw std::out_of_range("inverse called on non-inversable matrix");
@@ -151,6 +186,9 @@ Matrix Matrix::inverse() const {
             r[row][col] /= det;
         }
     }
+
+    m_inverse = std::make_shared<Matrix>(m_width, m_height);
+    *m_inverse = r;
 
     return r;
 }
