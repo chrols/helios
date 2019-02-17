@@ -26,15 +26,12 @@ void ObjFile::readFile(const char *filename) {
             size_t p1, p2, p3;
             iss >> p1 >> p2 >> p3;
             // FIXME Check existence?
-            m_triangles.push_back(Triangle(
+            m_triangles.emplace_back(Triangle(
                 m_vertices[p1 - 1], m_vertices[p2 - 1], m_vertices[p3 - 1]));
         } else {
             std::cerr << "Unrecognized line: " << cmd << std::endl;
         }
     }
-
-    std::cerr << "Vertices: " << m_vertices.size() << std::endl;
-    std::cerr << "Triangles: " << m_triangles.size() << std::endl;
 }
 
 std::vector<Triangle> ObjFile::triangles() const {
