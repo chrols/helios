@@ -1,4 +1,10 @@
-* TODO Stuff left to do
-** TODO SIMD
-** TODO Threading
-** TODO Ambient roof
+* TODO SIMD
+* DONE Threading
+* DONE Ambient roof
+* TODO Support OBJ format on a reasonable level
+* TODO BMP export
+* TODO PNG export
+* TODO Bounding boxes
+* TODO Cylinders
+* TODO Perlin noise
+

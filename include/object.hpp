@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-class Object {
+class Object : public std::enable_shared_from_this<Object> {
 public:
     Object();
 
@@ -18,6 +18,12 @@ public:
 
     std::vector<Intersection> intersect(const Ray &r) const;
     Optional<Vector> normal(const Point &p) const;
+
+    std::shared_ptr<Object> parent() const;
+    void setParent(std::shared_ptr<Object> parent);
+
+    Point worldToObject(const Point &worldPoint) const;
+    Vector normalToWorld(const Vector &normal) const;
 
     void move(const Vector &v);
     void move(double x, double y, double z);
@@ -36,4 +42,8 @@ public:
 
 protected:
     Matrix m_transform;
+    Matrix m_scale;
+    Matrix m_rotation;
+    Matrix m_translation;
+    std::weak_ptr<Object> m_parent;
 };

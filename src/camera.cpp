@@ -9,7 +9,7 @@ using std::chrono::seconds;
 using std::chrono::microseconds;
 
 Camera::Camera()
-    : width(256), height(144), fov(PI / 3.0), transform(Matrix::identity(4)) {
+    : width(200), height(100), fov(PI / 3.0), transform(Matrix::identity(4)) {
     calculatePixelSize();
 }
 
