@@ -15,8 +15,6 @@
 #include "tuple.hpp"
 #include "world.hpp"
 
-#include <gtest/gtest.h>
-
 using namespace std;
 
 std::shared_ptr<Sphere> hexagonCorner() {
