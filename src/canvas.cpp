@@ -3,7 +3,7 @@
 #include <iostream>
 
 Canvas::Canvas(int width, int height) : m_width(width), m_height(height) {
-    m_canvas.reserve(width * height);
+    m_canvas.resize(width * height, Color::Blue);
 }
 
 void Canvas::setPixel(int x, int y, Color c) {
@@ -24,4 +24,12 @@ void Canvas::write() const {
         }
     }
     std::cout << "\n";
+}
+
+int Canvas::width() const {
+    return m_width;
+}
+
+int Canvas::height() const {
+    return m_height;
 }

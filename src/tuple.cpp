@@ -204,6 +204,14 @@ bool Color::operator==(const Color &rhs) const {
             almostEqual(b, rhs.b));
 }
 
+uint32_t Color::toRgba() const {
+    uint8_t rc = std::min(std::max(r * 255, 0.0), 255.0);
+    uint8_t gc = std::min(std::max(g * 255, 0.0), 255.0);
+    uint8_t bc = std::min(std::max(b * 255, 0.0), 255.0);
+
+    return (rc << 16 | gc << 8 | bc);
+}
+
 std::ostream &operator<<(std::ostream &os, const Tuple &p) {
     os << "(" << p.x << ", " << p.y << ", " << p.z << ", " << p.w << ")";
     return os;

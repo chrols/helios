@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <iostream>
 
 // FIXME: add w
@@ -75,6 +76,9 @@ public:
     Color operator+(const Color &rhs) const;
     Color &operator+=(const Color &rhs);
     bool operator==(const Color &rhs) const;
+
+    uint32_t toRgba() const;
+
     double r, g, b;
 };
 

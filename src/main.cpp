@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "bmp_file.hpp"
 #include "camera.hpp"
 #include "canvas.hpp"
 #include "cylinder.hpp"
@@ -56,6 +57,7 @@ std::shared_ptr<Group> hexagon() {
 }
 
 int main(int argc, char **argv) {
+
     const unsigned pixels = 1000;
 
     ObjFile teapot;
@@ -141,5 +143,5 @@ int main(int argc, char **argv) {
     c.transform =
         Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0), Vector(0, 1, 0));
 
-    c.render(w).write();
+    writeBmpFile(argv[1], c.render(w));
 }
