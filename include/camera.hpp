@@ -6,19 +6,23 @@
 
 class Camera {
 public:
-    Camera();
+    Camera(int width = 200, int height = 100);
 
     Canvas render(const World &world) const;
     Ray rayForPixel(double x, double y) const;
 
-    void calculatePixelSize();
+    Matrix transform() const;
+    void setTransform(const Matrix &transform);
 
-    int width;
-    double halfWidth;
-    int height;
-    double halfHeight;
-    double fov;
-    double pixelSize;
-    Matrix transform;
-    mutable Optional<Matrix> cacheInverse;
+private:
+    void _calculatePixelSize();
+
+    int m_width;
+    int m_height;
+    double m_fov;
+    Matrix m_transform;
+
+    double m_halfWidth;
+    double m_halfHeight;
+    double m_pixelSize;
 };

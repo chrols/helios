@@ -140,8 +140,8 @@ int main(int argc, char **argv) {
     w.addLight(light);
 
     Camera c;
-    c.transform =
-        Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0), Vector(0, 1, 0));
+    c.setTransform(Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0),
+                                         Vector(0, 1, 0)));
 
     writeBmpFile(argv[1], c.render(w));
 }
