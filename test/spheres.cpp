@@ -6,13 +6,13 @@
 
 TEST_CASE("RayIntersectsSphereAtTwoPoints", "[Spheres]") {
     Ray r(Point(0, 0, -5), Vector(0, 0, 1));
-    Sphere s;
-    auto xs = s.intersect(r);
+    auto s = std::make_shared<Sphere>();
+    auto xs = s->intersect(r);
     REQUIRE(xs.size() == 2);
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
-    REQUIRE(xs[0].object == &s);
-    REQUIRE(xs[1].object == &s);
+    REQUIRE(xs[0].object == s);
+    REQUIRE(xs[1].object == s);
 }
 
 TEST_CASE("SphereDefaultTransformation", "[Spheres]") {
@@ -26,9 +26,9 @@ TEST_CASE("ChangeSphereTransformation", "[Spheres]") {
 
 TEST_CASE("IntersectingScaledSphereWithRay", "[Spheres]") {
     Ray r(Point(0, 0, -5), Vector(0, 0, 1));
-    Sphere s;
-    s.scale(2, 2, 2);
-    auto xs = s.intersect(r);
+    auto s = std::make_shared<Sphere>();
+    s->scale(2, 2, 2);
+    auto xs = s->intersect(r);
     REQUIRE(xs.size() == 2);
     REQUIRE(xs[0].t == 3);
     REQUIRE(xs[1].t == 7);

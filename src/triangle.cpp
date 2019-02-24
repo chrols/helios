@@ -34,7 +34,7 @@ std::vector<Intersection> Triangle::localIntersect(const Ray &r) const {
 
     auto t = f * e2.dot(originCrossE1);
 
-    return {Intersection(t, this)};
+    return {Intersection(t, shared_from_this())};
 }
 
 Optional<Vector> Triangle::localNormal(const Point &p) const {

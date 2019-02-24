@@ -3,41 +3,41 @@
 #include "cube.hpp"
 
 TEST_CASE("A ray intesects a cube", "[Cubes]") {
-    Cube c;
+    auto c = std::make_shared<Cube>();
     std::vector<Intersection> xs;
 
     // +x
-    xs = c.localIntersect(Ray(Point(5, 0.5, 0), Vector(-1, 0, 0)));
+    xs = c->localIntersect(Ray(Point(5, 0.5, 0), Vector(-1, 0, 0)));
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
 
     // -x
-    xs = c.localIntersect(Ray(Point(-5, 0.5, 0), Vector(1, 0, 0)));
+    xs = c->localIntersect(Ray(Point(-5, 0.5, 0), Vector(1, 0, 0)));
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
 
     // +y
-    xs = c.localIntersect(Ray(Point(0.5, 5, 0), Vector(0, -1, 0)));
+    xs = c->localIntersect(Ray(Point(0.5, 5, 0), Vector(0, -1, 0)));
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
 
     // -y
-    xs = c.localIntersect(Ray(Point(0.5, -5, 0), Vector(0, 1, 0)));
+    xs = c->localIntersect(Ray(Point(0.5, -5, 0), Vector(0, 1, 0)));
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
 
     // +z
-    xs = c.localIntersect(Ray(Point(0.5, 0, 5), Vector(0, 0, -1)));
+    xs = c->localIntersect(Ray(Point(0.5, 0, 5), Vector(0, 0, -1)));
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
 
     // -z
-    xs = c.localIntersect(Ray(Point(0.5, 0, -5), Vector(0, 0, 1)));
+    xs = c->localIntersect(Ray(Point(0.5, 0, -5), Vector(0, 0, 1)));
     REQUIRE(xs[0].t == 4);
     REQUIRE(xs[1].t == 6);
 
     // Inside
-    xs = c.localIntersect(Ray(Point(0, 0.5, 0), Vector(0, 0, 1)));
+    xs = c->localIntersect(Ray(Point(0, 0.5, 0), Vector(0, 0, 1)));
     REQUIRE(xs[0].t == -1);
     REQUIRE(xs[1].t == 1);
 }

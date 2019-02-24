@@ -6,7 +6,7 @@
 #include "object.hpp"
 #include "ray.hpp"
 
-Intersection::Intersection(double t, const Object *object)
+Intersection::Intersection(double t, std::shared_ptr<const Object> object)
     : t(t), object(object) {}
 
 Intersection::Intersection(const Intersection &i) : t(i.t), object(i.object) {}
@@ -26,7 +26,7 @@ void Intersection::precompute(const Ray &ray,
 
     reflectVector = ray.direction.reflect(normalVector);
 
-    std::vector<const Object *> containers;
+    std::vector<std::shared_ptr<const Object>> containers;
 
     for (auto &e : xs) {
         if (e == *this) {

@@ -20,8 +20,8 @@ std::vector<Intersection> Sphere::localIntersect(const Ray &r) const {
         std::swap(t1, t2);
 
     std::vector<Intersection> xs;
-    xs.push_back(Intersection(t1, this));
-    xs.push_back(Intersection(t2, this));
+    xs.push_back(Intersection(t1, shared_from_this()));
+    xs.push_back(Intersection(t2, shared_from_this()));
     return xs;
 }
 
@@ -29,11 +29,11 @@ Optional<Vector> Sphere::localNormal(const Point &p) const {
     return (p - Point(0, 0, 0));
 }
 
-Sphere Sphere::glassSphere() {
-    Sphere s;
-    s.material.color = Color::Black;
-    s.material.transparency = 1.0;
-    s.material.reflective = 1.0;
-    s.material.refraction = 1.5;
+std::shared_ptr<Sphere> Sphere::glassSphere() {
+    auto s = std::make_shared<Sphere>();
+    s->material.color = Color::Black;
+    s->material.transparency = 1.0;
+    s->material.reflective = 1.0;
+    s->material.refraction = 1.5;
     return s;
 }

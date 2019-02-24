@@ -13,7 +13,7 @@ public:
         auto t = -r.origin.y / r.direction.y;
 
         std::vector<Intersection> xs;
-        xs.push_back(Intersection(t, this));
+        xs.push_back(Intersection(t, shared_from_this()));
         return xs;
     }
 

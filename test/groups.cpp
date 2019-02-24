@@ -41,10 +41,10 @@ TEST_CASE("Intersecting a ray with a non-empty group") {
     Ray r(Point(0, 0, -5), Vector(0, 0, 1));
     auto xs = g->localIntersect(r);
     REQUIRE(xs.size() == 4);
-    REQUIRE(xs[0].object == s2.get());
-    REQUIRE(xs[1].object == s2.get());
-    REQUIRE(xs[2].object == s1.get());
-    REQUIRE(xs[3].object == s1.get());
+    REQUIRE(xs[0].object == s2);
+    REQUIRE(xs[1].object == s2);
+    REQUIRE(xs[2].object == s1);
+    REQUIRE(xs[3].object == s1);
 }
 
 TEST_CASE("Group transformations") {

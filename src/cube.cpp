@@ -13,7 +13,8 @@ std::vector<Intersection> Cube::localIntersect(const Ray &r) const {
     if (tmin > tmax)
         return {};
 
-    return {Intersection(tmin, this), Intersection(tmax, this)};
+    return {Intersection(tmin, shared_from_this()),
+            Intersection(tmax, shared_from_this())};
 }
 
 Optional<Vector> Cube::localNormal(const Point &p) const {

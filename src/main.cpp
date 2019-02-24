@@ -56,71 +56,80 @@ std::shared_ptr<Group> hexagon() {
     return hex;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
 
-    const unsigned pixels = 1000;
+    int aaLevel = 1;
+    int height = 100;
+    int width = 200;
+
+    for (int i = 1; i < argc; i++) {
+        if (argv[i] == "") {
+
+        } else if (argv[i] == "") {
+        }
+    }
 
     ObjFile teapot;
     teapot.readFile("cube.obj");
 
-    Sphere s;
-    s.material.color = Color(1, 0.2, 1);
+    auto s = std::make_shared<Sphere>();
+    s->material.color = Color(1, 0.2, 1);
 
     auto lightPosition = Point(-3, 3, -3);
     auto lightColor = Color(1, 1, 1);
     auto light = PointLight(lightPosition, lightColor);
 
-    Sphere floor;
-    floor.setTransform(Matrix::scalingMatrix(10, 0.01, 10));
-    floor.material.color = Color(1, 0.9, 0.9);
-    floor.material.specular = 0;
-    floor.material.reflective = 0.2;
+    auto floor = std::make_shared<Sphere>();
+    floor->setTransform(Matrix::scalingMatrix(10, 0.01, 10));
+    floor->material.color = Color(1, 0.9, 0.9);
+    floor->material.specular = 0;
+    floor->material.reflective = 0.2;
 
-    Sphere middle = Sphere::glassSphere();
-    middle.setTransform(Matrix::translationMatrix(-0.5, 1, 0.5));
+    auto middle = Sphere::glassSphere();
+    middle->setTransform(Matrix::translationMatrix(-0.5, 1, 0.5));
 
-    Sphere right;
-    right.setTransform(Matrix::translationMatrix(1.5, 0.5, -0.5) *
-                       Matrix::scalingMatrix(0.5, 0.5, 0.5));
-    right.material.color = Color(0.5, 1, 0.1);
-    right.material.diffuse = 0.7;
-    right.material.specular = 0.3;
+    auto right = std::make_shared<Sphere>();
+    right->setTransform(Matrix::translationMatrix(1.5, 0.5, -0.5) *
+                        Matrix::scalingMatrix(0.5, 0.5, 0.5));
+    right->material.color = Color(0.5, 1, 0.1);
+    right->material.diffuse = 0.7;
+    right->material.specular = 0.3;
 
-    Sphere left;
-    left.setTransform(Matrix::translationMatrix(-1.5, 0.33, -0.75) *
-                      Matrix::scalingMatrix(0.33, 0.33, 0.33));
-    left.material = Material();
-    left.material.color = Color::White;
-    left.material.diffuse = 0.7;
-    left.material.specular = 0.3;
-    left.material.reflective = 1.0;
+    auto left = std::make_shared<Sphere>();
+    left->setTransform(Matrix::translationMatrix(-1.5, 0.33, -0.75) *
+                       Matrix::scalingMatrix(0.33, 0.33, 0.33));
+    left->material = Material();
+    left->material.color = Color::White;
+    left->material.diffuse = 0.7;
+    left->material.specular = 0.3;
+    left->material.reflective = 1.0;
 
-    Plane plane;
-    plane.material = floor.material;
-    plane.material.reflective = 0.2;
-    plane.material.pattern =
+    auto plane = std::make_shared<Plane>();
+    plane->material = floor->material;
+    plane->material.reflective = 0.2;
+    plane->material.pattern =
         new CheckersPattern(Color(0.2, 0.2, 0.2), Color::White);
 
     const int cubeSize = 10;
 
-    Plane ceiling = plane;
-    ceiling.setTransform(Matrix::translationMatrix(0, cubeSize, 0));
+    auto ceiling = std::make_shared<Plane>(*plane);
+    ceiling->setTransform(Matrix::translationMatrix(0, cubeSize, 0));
 
-    Plane rightWall = plane;
-    rightWall.setTransform(Matrix::translationMatrix(cubeSize, 0, 0) *
+    auto rightWall = std::make_shared<Plane>(*plane);
+    rightWall->setTransform(Matrix::translationMatrix(cubeSize, 0, 0) *
+                            Matrix::rotationMatrixZ(PI / 2));
+
+    auto leftWall = std::make_shared<Plane>(*plane);
+    leftWall->setTransform(Matrix::translationMatrix(-cubeSize, 0, 0) *
                            Matrix::rotationMatrixZ(PI / 2));
 
-    Plane leftWall = plane;
-    leftWall.setTransform(Matrix::translationMatrix(-cubeSize, 0, 0) *
-                          Matrix::rotationMatrixZ(PI / 2));
+    auto frontWall = std::make_shared<Plane>(*plane);
+    frontWall->setTransform(Matrix::translationMatrix(0, 0, cubeSize) *
+                            Matrix::rotationMatrixX(PI / 2));
 
-    Plane frontWall = plane;
-    frontWall.setTransform(Matrix::translationMatrix(0, 0, cubeSize) *
+    auto backWall = std::make_shared<Plane>(*plane);
+    backWall->setTransform(Matrix::translationMatrix(0, 0, -cubeSize) *
                            Matrix::rotationMatrixX(PI / 2));
-
-    Plane backWall = plane;
-    backWall.setTransform(Matrix::translationMatrix(0, 0, -cubeSize) *
-                          Matrix::rotationMatrixX(PI / 2));
 
     World w;
     w.addObject(left);
@@ -135,7 +144,7 @@ int main(int argc, char **argv) {
 
     auto hexy = hexagon();
     hexy->setTransform(Matrix::rotationMatrixX(PI / 2));
-    w.addObject(*hexy);
+    w.addObject(hexy);
 
     w.addLight(light);
 

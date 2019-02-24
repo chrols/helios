@@ -31,13 +31,13 @@ std::vector<Intersection> Cylinder::localIntersect(const Ray &r) const {
     auto y0 = r.origin.y + t0 * r.direction.y;
 
     if (m_minimum < y0 and y0 < m_maximum) {
-        xs.emplace_back(Intersection(t0, this));
+        xs.emplace_back(Intersection(t0, shared_from_this()));
     }
 
     auto y1 = r.origin.y + t1 * r.direction.y;
 
     if (m_minimum < y1 and y1 < m_maximum) {
-        xs.emplace_back(Intersection(t1, this));
+        xs.emplace_back(Intersection(t1, shared_from_this()));
     }
 
     return xs;

@@ -6,12 +6,15 @@
 #include "ray.hpp"
 #include "sphere.hpp"
 
+#include <memory>
+
 class World {
 public:
     World();
     std::vector<Intersection> intersect(const Ray &ray) const;
     void addLight(const Light &light);
-    void addObject(const Object &object);
+    void addObject(std::shared_ptr<Object> object);
+
     Color colorAt(const Ray &ray,
                   unsigned remaining = DEFAULT_RECUR_LIMIT) const;
     Color reflectedColor(const Intersection &hit,
@@ -22,7 +25,7 @@ public:
 
     void clearObjects();
 
-    const Object *firstObject() const;
+    std::shared_ptr<Object> firstObject() const;
 
     static World testWorld();
 
@@ -33,5 +36,5 @@ public: // FIXME Rewrite test?
                     unsigned remaining = DEFAULT_RECUR_LIMIT) const;
 
     std::vector<Light> m_light;
-    std::vector<const Object *> m_object;
+    std::vector<std::shared_ptr<Object>> m_object;
 };

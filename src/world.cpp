@@ -22,9 +22,8 @@ void World::addLight(const PointLight &light) {
     m_light.push_back(light);
 }
 
-void World::addObject(const Object &object) {
-    // FIXME
-    m_object.push_back(&object);
+void World::addObject(std::shared_ptr<Object> object) {
+    m_object.push_back(object);
 }
 
 // FIXME Move to intersection?
@@ -105,25 +104,25 @@ void World::clearObjects() {
     m_object.clear();
 }
 
-const Object *World::firstObject() const {
+std::shared_ptr<Object> World::firstObject() const {
     return m_object[0];
 }
 
 World World::testWorld() {
     PointLight light(Point(-10, 10, -10), Color(1, 1, 1));
 
-    Sphere *s1 = new Sphere();
+    auto s1 = std::make_shared<Sphere>();
     s1->material.color = Color(0.8, 1.0, 0.6);
     s1->material.diffuse = 0.7;
     s1->material.specular = 0.2;
 
-    Sphere *s2 = new Sphere();
+    auto s2 = std::make_shared<Sphere>();
     s2->setTransform(Matrix::scalingMatrix(0.5, 0.5, 0.5));
 
     World w;
     w.addLight(light);
-    w.addObject(*s1);
-    w.addObject(*s2);
+    w.addObject(s1);
+    w.addObject(s2);
 
     return w;
 }

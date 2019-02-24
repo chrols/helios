@@ -49,9 +49,10 @@ TEST_CASE("A ray misses the p2-p3 edge", "[Triangles]") {
 }
 
 TEST_CASE("A ray strikes a triangle", "[Triangles]") {
-    Triangle t(Point(0, 1, 0), Point(-1, 0, 0), Point(1, 0, 0));
+    auto t = std::make_shared<Triangle>(Point(0, 1, 0), Point(-1, 0, 0),
+                                        Point(1, 0, 0));
     Ray r(Point(0, 0.5, -2), Vector(0, 0, 1));
 
-    auto xs = t.localIntersect(r);
+    auto xs = t->localIntersect(r);
     REQUIRE(xs[0].t == 2);
 }
