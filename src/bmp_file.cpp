@@ -24,7 +24,6 @@ void writeBmpFile(const char *filename, const Canvas &canvas) {
     uint32_t verticalResolution = 0;
     uint32_t colorPalette = 0;
     uint32_t importantColors = 0;
-    uint32_t whitePixel = 0xfffffff;
 
     writeBytes(file, fileSize);
     writeBytes(file, reserved);

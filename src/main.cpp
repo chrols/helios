@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "bmp_file.hpp"
 #include "camera.hpp"
@@ -58,15 +59,26 @@ std::shared_ptr<Group> hexagon() {
 
 int main(int argc, char *argv[]) {
 
-    int aaLevel = 1;
-    int height = 100;
-    int width = 200;
+    if (argc < 2) {
+        std::cerr << "No output file specified" << std::endl;
+        return -1;
+    }
+
+    const char *outputFilename = nullptr;
 
     for (int i = 1; i < argc; i++) {
-        if (argv[i] == "") {
-
-        } else if (argv[i] == "") {
+        if (strcmp(argv[i], "-o") == 0) {
+            if (argc > i+1) {
+                outputFilename = argv[i+1];
+                std::cerr << std::string(outputFilename) << std::endl;
+            }
+        } else if (strcmp(argv[i], "") == 0) {
         }
+    }
+
+    if (!outputFilename) {
+        std::cerr << "No output file specified" << std::endl;
+        return -1;
     }
 
     ObjFile teapot;
@@ -152,5 +164,5 @@ int main(int argc, char *argv[]) {
     c.setTransform(Matrix::viewTransform(Point(0, 1, -4), Point(0, 1, 0),
                                          Vector(0, 1, 0)));
 
-    writeBmpFile(argv[1], c.render(w));
+    writeBmpFile(outputFilename, c.render(w));
 }

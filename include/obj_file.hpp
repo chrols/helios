@@ -1,4 +1,4 @@
-#pragma oncne.
+#pragma once
 
 #include "common.hpp"
 #include "triangle.hpp"

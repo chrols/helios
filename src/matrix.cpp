@@ -29,6 +29,8 @@ Matrix &Matrix::operator=(const Matrix &rhs) {
     m_height = rhs.m_height;
     m_rows = rhs.m_rows;
     m_inverse = rhs.m_inverse;
+
+    return *this;
 }
 
 Point Matrix::operator*(const Point &rhs) const {
