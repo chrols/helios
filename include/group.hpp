@@ -6,6 +6,7 @@
 class Group : public Object {
 public:
     Group();
+    virtual ~Group() = default;
 
     std::vector<Intersection> localIntersect(const Ray &r) const override;
     Optional<Vector> localNormal(const Point &p) const override;

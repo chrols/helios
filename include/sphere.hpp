@@ -10,6 +10,7 @@
 class Sphere : public Object {
 public:
     Sphere();
+    virtual ~Sphere() = default;
     std::vector<Intersection> localIntersect(const Ray &r) const override;
     Optional<Vector> localNormal(const Point &p) const override;
     static std::shared_ptr<Sphere> glassSphere();

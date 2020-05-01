@@ -5,6 +5,7 @@
 class Cube : public Object {
 public:
     Cube();
+    virtual ~Cube() = default;
     std::vector<Intersection> localIntersect(const Ray &r) const override;
     Optional<Vector> localNormal(const Point &p) const override;
 

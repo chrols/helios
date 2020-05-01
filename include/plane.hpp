@@ -5,6 +5,7 @@
 class Plane : public Object {
 public:
     Plane() : Object() {}
+    virtual ~Plane() = default;
 
     std::vector<Intersection> localIntersect(const Ray &r) const override {
         if (std::abs(r.direction.y) < 0.0001)
