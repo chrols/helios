@@ -12,6 +12,7 @@
 
 class Matrix {
 public:
+    Matrix();
     Matrix(unsigned width, unsigned height);
     Matrix(const Matrix &matrix);
     Matrix(Matrix &&rhs);

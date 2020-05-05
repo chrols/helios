@@ -8,8 +8,8 @@ using std::chrono::duration_cast;
 using std::chrono::seconds;
 using std::chrono::microseconds;
 
-Camera::Camera(int width, int height)
-    : m_width(width), m_height(height), m_fov(PI / 3.0),
+Camera::Camera(int width, int height, double fov)
+    : m_width(width), m_height(height), m_fov(fov),
       m_transform(Matrix::identity(4)) {
     _calculatePixelSize();
 }

@@ -6,7 +6,7 @@
 
 class Camera {
 public:
-    Camera(int width = 200, int height = 100);
+    Camera(int width = 200, int height = 100, double fov = PI / 3.0);
 
     Canvas render(const World &world) const;
     Ray rayForPixel(double x, double y) const;

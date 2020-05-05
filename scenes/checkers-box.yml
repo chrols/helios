@@ -1,0 +1,131 @@
+- add: camera
+  width: 200
+  height: 100
+  field-of-view: 45
+  from: [ 0, 1, -4 ]
+  to: [ 0, 1, 0 ]
+  up: [ 0, 1, 0 ]
+
+- add: light
+  at: [ -3, 3, -3 ]
+  intensity: [ 1, 1, 1 ]
+
+- define: glass-material
+  value:
+    color: [ 0, 0, 0 ]
+    transparency: 1.0
+    reflective: 1.0
+    refraction: 1.5
+
+- define: floor-material
+  value:
+    pattern: [ checkers, [ 0.2, 0.2, 0.2], [ 1, 1, 1 ]]
+    color: [ 1, 0.9, 0.9 ]
+    specular: 0.0
+    reflective: 0.2
+
+- define: blue-material
+  extend: white-material
+  value:
+    color: [ 0.537, 0.831, 0.914 ]
+
+- define: sphere-material
+  value:
+    color: [ 0.5, 1, 0.1 ]
+    diffuse: 0.7
+    specular: 0.3
+
+- define: left-material
+  value:
+    color: [ 1, 1, 1 ]
+    diffuse: 0.7
+    specular: 0.3
+    reflective: 1.0
+
+- define: standard-transform
+  value:
+    - [ translate, 0, 0, 0 ]
+    - [ scale, 1, 1, 1 ]
+
+- define: large-object
+  value:
+    - standard-transform
+    - [ scale, 3.5, 3.5, 3.5 ]
+
+- define: medium-object
+  value:
+    - standard-transform
+    - [ scale, 3, 3, 3 ]
+
+- define: small-object
+  value:
+    - standard-transform
+    - [ scale, 2, 2, 2 ]
+
+- define: standard-transform
+  value:
+    - [ translate, 0, 0, 0 ]
+    - [ scale, 1, 1, 1 ]
+
+
+# Left sphere
+- add: sphere
+  material:
+    color: [ 1, 1, 1 ]
+    diffuse: 0.7
+    specular: 0.3
+    reflective: 1.0
+  transform:
+    - [ translate, -1.5, 0.33, -0.75 ]
+    - [ scale, 0.33, 0.33, 0.33 ]
+
+# Middle sphere
+- add: sphere
+  material: glass-material
+  transform:
+    - standard-transform
+    - [ translate, -0.5, 1, 0.5 ]
+
+# Right sphere
+- add: sphere
+  material:
+    color: [ 0.5, 1, 0.1]
+    diffuse: 0.7
+    specular: 0.3
+  transform:
+    - [ translate, 1.5, 0.5, -0.5 ]
+    - [ scale, 0.5, 0.5, 0.5 ]
+
+# Floor
+- add: plane
+  material: floor-material
+  transform:
+    - standard-transform
+
+# Front wall
+- add: plane
+  material: floor-material
+  transform:
+    - [ translate, 0, 0, 10 ]
+    - [ rotate-x, 1.5707 ]
+
+# Back wall
+- add: plane
+  material: floor-material
+  transform:
+    - [ translate, 0, 0, -10 ]
+    - [ rotate-x, 1.5707 ]
+
+# Left wall
+- add: plane
+  material: floor-material
+  transform:
+    - [ translate, -10, 0, 0 ]
+    - [ rotate-z, 1.5707 ]
+
+# Right wall
+- add: plane
+  material: floor-material
+  transform:
+    - [ translate, 10, 0, 0 ]
+    - [ rotate-z, 1.5707 ]

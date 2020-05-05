@@ -1,28 +1,34 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-project(raytracer)
+project(helios)
 
 #set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -std=c++1z -Wall -Werror")
 
 include_directories(include)
+include_directories(yaml-cpp/include)
+add_subdirectory(yaml-cpp)
+
+
 
 FILE(GLOB SOURCE_FILES src/*.cpp)
 FILE(GLOB TEST_FILES test/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} yaml-cpp)
 
 list(FILTER SOURCE_FILES EXCLUDE REGEX "main.cpp$")
 
 add_definitions(-DUNITTEST)
 add_executable(${PROJECT_NAME}-test ${SOURCE_FILES} ${TEST_FILES})
+target_link_libraries(${PROJECT_NAME}-test yaml-cpp)
 
 set(UNIT_TEST ${PROJECT_NAME}-test)
 add_custom_command(
      TARGET ${UNIT_TEST}
      COMMENT "Run tests"
-     POST_BUILD 
+     POST_BUILD
      COMMAND ${PROJECT_NAME}-test --use-colour no
 )
 
